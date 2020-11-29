@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Home from "../views/Home.vue";
 import Test from "../views/Test.vue";
+import Day from "../views/Day.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -12,6 +13,12 @@ const routes: Array<RouteRecordRaw> = [
     path: "/test",
     name: "test",
     component: Test
+  },
+  {
+    path: "/day/:day",
+    name: "day",
+    component: Day,
+    props: route => ({ day: +route.params.day || 0 })
   }
 ];
 
