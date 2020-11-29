@@ -11,7 +11,7 @@ export interface LinePart {
   text: string;
 }
 
-export type Line = Array<LinePart>;
+export type Line = LinePart[];
 
 export interface OutputPublic {
   print: (text: string, newLine?: boolean) => void;
@@ -21,7 +21,7 @@ export interface OutputPublic {
 
 export function useOutput() {
   const state = reactive({
-    lines: [] as Array<Line>
+    lines: [[]] as Line[]
   });
 
   function write(text: string, type: LineType, noNewLine = false) {
