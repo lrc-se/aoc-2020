@@ -15,11 +15,14 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+const days = [1];
+
 export default defineComponent({
   setup() {
     return {
       links: [
-        { title: "Test", to: "/test" }
+        { title: "Test", to: "/test" },
+        ...days.map(day => ({ title: `Day ${day}`, to: `/day/${day}` }))
       ]
     };
   }
