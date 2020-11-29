@@ -1,0 +1,3 @@
+A,r,r,a,y, ,of, ,snipp,ets,!
+This is an error
+This is a system message
