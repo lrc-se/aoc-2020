@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Home from "../views/Home.vue";
 import Test from "../views/Test.vue";
 import Day from "../views/Day.vue";
+import NotFound from "../views/NotFound.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -19,6 +20,11 @@ const routes: Array<RouteRecordRaw> = [
     name: "day",
     component: Day,
     props: route => ({ number: +route.params.number || 0 })
+  },
+  {
+    path: "/:catchAll(.*)",
+    name: "404",
+    component: NotFound
   }
 ];
 
