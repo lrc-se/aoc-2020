@@ -15,10 +15,10 @@ const routes: Array<RouteRecordRaw> = [
     component: Test
   },
   {
-    path: "/day/:day",
+    path: "/day/:number",
     name: "day",
     component: Day,
-    props: route => ({ day: +route.params.day || 0 })
+    props: route => ({ number: +route.params.number || 0 })
   }
 ];
 

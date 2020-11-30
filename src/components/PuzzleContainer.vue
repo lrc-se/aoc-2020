@@ -7,10 +7,17 @@
         class="puzzle"
       >
         <h3>Puzzle {{ puzzle.number }}</h3>
-        <button class="button" @click="$emit('run-puzzle', puzzle.number)">Run</button>
+        <button
+          class="button"
+          :disabled="loading"
+          @click="$emit('run-puzzle', puzzle.number)"
+        >
+          Run
+        </button>
         <button
           v-if="puzzle.hasTest"
           class="button"
+          :disabled="loading"
           @click="$emit('run-test', puzzle.number)"
         >
           Test
@@ -23,17 +30,16 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-
-export interface Puzzle {
-  number: number;
-  hasTest?: boolean;
-}
+import { Puzzle } from "@/days/days";
 
 export default defineComponent({
   props: {
     puzzles: {
       type: Array as PropType<Puzzle[]>,
       default: () => []
+    },
+    loading: {
+      type: Boolean
     }
   },
 

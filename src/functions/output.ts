@@ -16,6 +16,7 @@ export type Line = LinePart[];
 export interface OutputPublic {
   print: (text: string, newLine?: boolean) => void;
   error: (text: string, newLine?: boolean) => void;
+  system: (text: string, newLine?: boolean) => void;
   clear: () => void;
 }
 
@@ -54,12 +55,10 @@ export function useOutput() {
   }
 
   return {
-    write,
     print,
     error,
     system,
     clear,
-    lines: computed(() => state.lines.slice()),
-    exported: { print, error, clear } as OutputPublic
+    lines: computed(() => state.lines.slice())
   };
 }

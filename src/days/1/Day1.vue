@@ -1,44 +1,28 @@
 <template>
-  <PuzzleContainer
-    :puzzles="puzzles"
-    @run-puzzle="runPuzzle"
-    @run-test="runTest"
-  />
   <PuzzleOutput :lines="output" @clear="clearOutput" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useOutput } from "@/functions/output";
-import PuzzleContainer, { Puzzle } from "@/components/PuzzleContainer.vue";
+import { createHandler } from "./day1";
 import PuzzleOutput from "@/components/PuzzleOutput.vue";
 
 export default defineComponent({
   components: {
-    PuzzleContainer,
     PuzzleOutput
   },
 
-  setup() {
-    const output = useOutput();
+  emits: ["handler"],
 
-    const puzzles: Puzzle[] = [
-      { number: 1, hasTest: true },
-      { number: 2, hasTest: false }
-    ];
+  setup(props, context) {
+    const output = useOutput();
+    const handler = createHandler(output);
+    context.emit("handler", handler);
 
     return {
-      puzzles,
-      runPuzzle(number: number) {
-        output.system(`Puzzle ${number} not available`);
-      },
-      runTest(number: number) {
-        output.error(`Test ${number} not available`);
-      },
       output: output.lines,
-      clearOutput() {
-        output.clear();
-      }
+      clearOutput: output.clear
     };
   }
 });

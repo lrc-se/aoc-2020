@@ -1,3 +1,7 @@
+export interface InputPublic {
+  load: (url: string) => Promise<string[]>;
+}
+
 async function load(url: string): Promise<string[]> {
   const response = await fetch(url);
   if (response.ok) {
@@ -8,6 +12,6 @@ async function load(url: string): Promise<string[]> {
   }
 }
 
-export function useInput() {
+export function useInput(): InputPublic {
   return { load };
 }
