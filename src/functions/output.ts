@@ -51,7 +51,7 @@ export function useOutput() {
   }
 
   function clear() {
-    state.lines = [];
+    state.lines = [[]];
   }
 
   return {
