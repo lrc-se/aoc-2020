@@ -13,7 +13,7 @@
         <span v-if="i == lines.length - 1" class="cursor">&nbsp;</span>
       </div>
     </output>
-    <button class="clear button" @click="$emit('clear')">Clear</button>
+    <button class="clear button small" @click="$emit('clear')">Clear</button>
   </div>
 </template>
 
@@ -49,8 +49,8 @@ output {
   height: 768px;
   max-height: 80vh;
   padding: 1em;
-  background-color: rgba(0, 0, 0, .25);
-  font-family: monospace;
+  background-color: rgba(0, 0, 0, .667);
+  font-family: 'Share Tech Mono', monospace;
   display: block;
   overflow: auto;
 }
@@ -65,12 +65,12 @@ output {
 }
 
 .error {
-  color: #f25;
+  color: #f23;
   font-weight: 700;
 }
 
 .system {
-  color: #25f;
+  color: #75f;
   font-style: italic;
 }
 

@@ -18,7 +18,7 @@ export default defineComponent({
 <style scoped>
 .error {
   margin: 2em 0;
-  color: #f25;
+  color: #f23;
   font-size: 3em;
   font-weight: 700;
   text-transform: uppercase;

@@ -8,7 +8,7 @@
       >
         <h3>Puzzle {{ puzzle.number }}</h3>
         <button
-          class="button"
+          class="button primary"
           :disabled="loading"
           @click="$emit('run-puzzle', puzzle.number)"
         >
@@ -16,7 +16,7 @@
         </button>
         <button
           v-if="puzzle.hasTest"
-          class="button"
+          class="button secondary"
           :disabled="loading"
           @click="$emit('run-test', puzzle.number)"
         >

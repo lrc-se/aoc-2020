@@ -1,7 +1,7 @@
 <template>
   <h2>Test</h2>
   <p>
-    <button class="button" @click="load">Run</button>
+    <button class="button primary" @click="load">Run</button>
   </p>
   <PuzzleOutput :lines="lines" @clear="clearOutput" />
 </template>
