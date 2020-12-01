@@ -17,7 +17,9 @@ $ yarn build      # build for production
 When building for production, the base path can be changed by defining the `VUE_BASE_PATH` environment variable.
 Also remember to [configure server routing](https://router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations).
 
-Days
-----
+Puzzles
+-------
 
-TBA
+### Day 1
+
+Solved with simple, performant `for` loops.
