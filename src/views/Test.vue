@@ -23,7 +23,7 @@ export default defineComponent({
 
     return {
       async load() {
-        const lines = await input.load("/inputs/test.txt");
+        const lines = await input.load("test.txt");
         lines[0].split(",").forEach(part => {
           output.print(part, true);
         });

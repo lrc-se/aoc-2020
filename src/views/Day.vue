@@ -67,14 +67,14 @@ export default defineComponent({
 
     async function runTest(number: number) {
       state.loadingInput = true;
-      const data = await input.load(`/inputs/day${props.number}-test${number}.txt`);
+      const data = await input.load(`day${props.number}-test${number}.txt`);
       state.loadingInput = false;
       callHandler(`runTest${number}`, data);
     }
 
     async function runPuzzle(number: number) {
       state.loadingInput = true;
-      const data = await input.load(`/inputs/day${props.number}.txt`);
+      const data = await input.load(`day${props.number}.txt`);
       state.loadingInput = false;
       callHandler(`runPuzzle${number}`, data);
     }

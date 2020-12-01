@@ -35,7 +35,7 @@ body {
   margin: 0;
   padding: 2em;
   color: #fefeff;
-  background: #000 url('/bg.jpg') center center/cover fixed;
+  background: #000 url('assets/img/bg.jpg') center center/cover fixed;
   font-family: 'Nova Square', sans-serif;
   font-size: 1em;
   line-height: 1.4;

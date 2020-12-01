@@ -11,7 +11,7 @@
             <template v-if="isDefaultLinePart(part)">{{ part.text }}</template>
             <span v-else :class="part.type">{{ part.text }}</span>
           </template>
-          <span v-if="i == lines.length - 1" class="cursor">&nbsp;</span>
+          <span v-if="i == lines.length - 1" class="cursor" />
         </div>
       </output>
     </div>
@@ -98,6 +98,7 @@ output {
 
 .cursor {
   position: relative;
+  width: .5em;
   margin-left: .1em;
   display: inline-block;
 }
