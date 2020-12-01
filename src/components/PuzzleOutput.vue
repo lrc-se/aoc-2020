@@ -39,7 +39,7 @@ export default defineComponent({
       const el = output.value;
       if (el) {
         nextTick(() => {
-          el.scrollTo(0, el.scrollHeight);
+          el.scrollTop = el.scrollHeight;
         });
       }
     });
