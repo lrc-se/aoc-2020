@@ -8,19 +8,19 @@
       >
         <h3>Puzzle {{ puzzle.number }}</h3>
         <button
-          class="button primary"
-          :disabled="loading"
-          @click="$emit('run-puzzle', puzzle.number)"
-        >
-          Run
-        </button>
-        <button
           v-if="puzzle.hasTest"
           class="button secondary"
           :disabled="loading"
           @click="$emit('run-test', puzzle.number)"
         >
           Test
+        </button>
+        <button
+          class="button primary"
+          :disabled="loading"
+          @click="$emit('run-puzzle', puzzle.number)"
+        >
+          Run
         </button>
       </div>
     </section>
@@ -43,7 +43,7 @@ export default defineComponent({
     }
   },
 
-  emits: ["run-puzzle", "run-test"]
+  emits: ["run-test", "run-puzzle"]
 });
 </script>
 

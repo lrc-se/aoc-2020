@@ -1,12 +1,12 @@
 <template>
   <template v-if="day">
-    <h2>Day {{ number }}</h2>
+    <h2>Day {{ day.title ? `${day.number}: ${day.title}` : day.number }}</h2>
     <PuzzleContainer
       v-if="handlerLoaded"
       :puzzles="day.puzzles"
       :loading="loadingInput"
-      @run-puzzle="runPuzzle"
       @run-test="runTest"
+      @run-puzzle="runPuzzle"
     />
   </template>
   <component
@@ -65,13 +65,6 @@ export default defineComponent({
       }
     }
 
-    async function runPuzzle(number: number) {
-      state.loadingInput = true;
-      const data = await input.load(`/inputs/day${props.number}.txt`);
-      state.loadingInput = false;
-      callHandler(`runPuzzle${number}`, data);
-    }
-
     async function runTest(number: number) {
       state.loadingInput = true;
       const data = await input.load(`/inputs/day${props.number}-test${number}.txt`);
@@ -79,10 +72,17 @@ export default defineComponent({
       callHandler(`runTest${number}`, data);
     }
 
+    async function runPuzzle(number: number) {
+      state.loadingInput = true;
+      const data = await input.load(`/inputs/day${props.number}.txt`);
+      state.loadingInput = false;
+      callHandler(`runPuzzle${number}`, data);
+    }
+
     return {
       ...toRefs(state),
-      runPuzzle,
       runTest,
+      runPuzzle,
       setHandler(instance: object) {
         handler = instance;
         state.handlerLoaded = true;

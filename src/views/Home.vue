@@ -2,7 +2,13 @@
   <nav class="center">
     <ul v-if="links.length">
       <li v-for="link in links" :key="link.to">
-        <router-link class="border" :to="link.to">{{ link.title }}</router-link>
+        <router-link
+          class="border"
+          :to="link.to"
+          :title="link.title"
+        >
+          {{ link.label }}
+        </router-link>
       </li>
     </ul>
   </nav>
@@ -16,8 +22,8 @@ export default defineComponent({
   setup() {
     return {
       links: [
-        { title: "Test", to: "/test" },
-        ...days.map(day => ({ title: `Day ${day.number}`, to: `/day/${day.number}` }))
+        { label: "Test", to: "/test" },
+        ...days.map(day => ({ label: `Day ${day.number}`, to: `/day/${day.number}`, title: day.title }))
       ]
     };
   }

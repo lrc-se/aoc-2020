@@ -1,6 +1,7 @@
 export const days: Day[] = [
   {
     number: 1,
+    title: "Report Repair",
     puzzles: [
       { number: 1, hasTest: true },
       { number: 2, hasTest: true }
@@ -15,6 +16,7 @@ export interface Puzzle {
 
 export interface Day {
   number: number;
+  title?: string;
   puzzles: Puzzle[];
 }
 
