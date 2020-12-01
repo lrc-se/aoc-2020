@@ -65,7 +65,7 @@ output {
   width: 100%;
   height: 768px;
   max-height: 80vh;
-  padding: 1em;
+  padding: 1em 1em 0;
   background-color: rgba(0, 0, 0, .667);
   font-family: 'Share Tech Mono', monospace;
   display: block;
