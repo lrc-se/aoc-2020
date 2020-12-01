@@ -21,10 +21,7 @@ import { days } from "@/days/days";
 export default defineComponent({
   setup() {
     return {
-      links: [
-        { label: "Test", to: "/test" },
-        ...days.map(day => ({ label: `Day ${day.number}`, to: `/day/${day.number}`, title: day.title }))
-      ]
+      links: days.map(day => ({ label: `Day ${day.number}`, to: `/day/${day.number}`, title: day.title }))
     };
   }
 });
