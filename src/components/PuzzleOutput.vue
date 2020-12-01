@@ -1,24 +1,26 @@
 <template>
   <div class="puzzle-output center">
-    <output class="border">
-      <div
-        v-for="(line, i) in lines"
-        :key="i"
-        class="line"
-      >
-        <template v-for="(part, j) in line" :key="j">
-          <template v-if="isDefaultLinePart(part)">{{ part.text }}</template>
-          <span v-else :class="part.type">{{ part.text }}</span>
-        </template>
-        <span v-if="i == lines.length - 1" class="cursor">&nbsp;</span>
-      </div>
-    </output>
+    <div class="output-container border">
+      <output ref="output">
+        <div
+          v-for="(line, i) in lines"
+          :key="i"
+          class="line"
+        >
+          <template v-for="(part, j) in line" :key="j">
+            <template v-if="isDefaultLinePart(part)">{{ part.text }}</template>
+            <span v-else :class="part.type">{{ part.text }}</span>
+          </template>
+          <span v-if="i == lines.length - 1" class="cursor">&nbsp;</span>
+        </div>
+      </output>
+    </div>
     <button class="clear button small" @click="$emit('clear')">Clear</button>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, ref, watch, nextTick } from "vue";
 import { Line, LinePart, LineType } from "@/functions/output";
 
 export default defineComponent({
@@ -31,8 +33,19 @@ export default defineComponent({
 
   emits: ["clear"],
 
-  setup() {
+  setup(props) {
+    const output = ref<HTMLOutputElement | null>(null);
+    watch(() => props.lines, () => {
+      const el = output.value;
+      if (el) {
+        nextTick(() => {
+          el.scrollTo(0, el.scrollHeight);
+        });
+      }
+    });
+
     return {
+      output,
       isDefaultLinePart: (part: LinePart) => part.type == LineType.Default
     };
   }
@@ -42,6 +55,10 @@ export default defineComponent({
 <style scoped>
 .puzzle-output {
   text-align: right;
+}
+
+.output-container {
+  overflow: hidden;
 }
 
 output {
@@ -60,8 +77,13 @@ output {
 }
 
 .line {
+  height: 1.4em;
   text-align: left;
   white-space: nowrap;
+}
+
+.line:last-child {
+  margin-bottom: 1em;
 }
 
 .error {

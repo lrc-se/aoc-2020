@@ -14,9 +14,9 @@ export interface LinePart {
 export type Line = LinePart[];
 
 export interface OutputPublic {
-  print: (text: string, newLine?: boolean) => void;
-  error: (text: string, newLine?: boolean) => void;
-  system: (text: string, newLine?: boolean) => void;
+  print: (text?: string, newLine?: boolean) => void;
+  error: (text?: string, newLine?: boolean) => void;
+  system: (text?: string, newLine?: boolean) => void;
   clear: () => void;
 }
 
@@ -25,7 +25,7 @@ export function useOutput() {
     lines: [[]] as Line[]
   });
 
-  function write(text: string, type: LineType, noNewLine = false) {
+  function write(text?: string, type: LineType = LineType.Default, noNewLine = false) {
     if (text) {
       if (!state.lines.length) {
         state.lines.push([{ type, text }]);
@@ -38,15 +38,15 @@ export function useOutput() {
     }
   }
 
-  function print(text: string, noNewLine = false) {
+  function print(text?: string, noNewLine = false) {
     write(text, LineType.Default, noNewLine);
   }
 
-  function error(text: string, noNewLine = false) {
+  function error(text?: string, noNewLine = false) {
     write(text, LineType.Error, noNewLine);
   }
 
-  function system(text: string, noNewLine = false) {
+  function system(text?: string, noNewLine = false) {
     write(text, LineType.System, noNewLine);
   }
 
