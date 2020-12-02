@@ -9,8 +9,10 @@ export const days: Day[] = [
   },
   {
     number: 2,
+    title: "Password Philosophy",
     puzzles: [
-      { number: 1, hasTest: true, hasSolution: true }
+      { number: 1, hasTest: true, hasSolution: true },
+      { number: 2, hasTest: true, hasSolution: true }
     ]
   }
 ];
