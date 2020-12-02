@@ -16,6 +16,7 @@
           Test
         </button>
         <button
+          v-if="puzzle.hasSolution"
           class="button primary"
           :disabled="loading"
           @click="$emit('run-puzzle', puzzle.number)"

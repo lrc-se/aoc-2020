@@ -3,8 +3,8 @@ export const days: Day[] = [
     number: 1,
     title: "Report Repair",
     puzzles: [
-      { number: 1, hasTest: true },
-      { number: 2, hasTest: true }
+      { number: 1, hasTest: true, hasSolution: true },
+      { number: 2, hasTest: true, hasSolution: true }
     ]
   }
 ];
@@ -12,6 +12,7 @@ export const days: Day[] = [
 export interface Puzzle {
   number: number;
   hasTest?: boolean;
+  hasSolution?: boolean;
 }
 
 export interface Day {
