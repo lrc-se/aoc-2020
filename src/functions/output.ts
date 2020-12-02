@@ -54,11 +54,17 @@ export function useOutput() {
     state.lines = [[]];
   }
 
+  const lines = computed(() => state.lines.slice());
+
   return {
     print,
     error,
     system,
     clear,
-    lines: computed(() => state.lines.slice())
+    lines,
+    mixin: {
+      output: lines,
+      clearOutput: clear
+    }
   };
 }

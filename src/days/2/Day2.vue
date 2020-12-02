@@ -20,10 +20,7 @@ export default defineComponent({
     const handler = createHandler(output);
     emit("handler", handler);
 
-    return {
-      output: output.lines,
-      clearOutput: output.clear
-    };
+    return output.mixin;
   }
 });
 </script>
