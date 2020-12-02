@@ -23,3 +23,7 @@ Puzzles
 ### Day 1
 
 Solved with simple, performant `for` loops.
+
+### Day 2
+
+Using regex matching, destructuring and functional techniques.
