@@ -4,7 +4,7 @@ export const days: Day[] = [
     title: "Report Repair",
     puzzles: [
       { number: 1, hasTest: true, hasSolution: true },
-      { number: 2, hasTest: true, hasSolution: true }
+      { number: 2, hasTest: true, testInput: 1, hasSolution: true }
     ]
   },
   {
@@ -12,7 +12,7 @@ export const days: Day[] = [
     title: "Password Philosophy",
     puzzles: [
       { number: 1, hasTest: true, hasSolution: true },
-      { number: 2, hasTest: true, hasSolution: true }
+      { number: 2, hasTest: true, testInput: 1, hasSolution: true }
     ]
   },
   {
@@ -26,6 +26,7 @@ export const days: Day[] = [
 export interface Puzzle {
   number: number;
   hasTest?: boolean;
+  testInput?: number;
   hasSolution?: boolean;
 }
 

@@ -19,7 +19,7 @@
 <script lang="ts">
 import { defineComponent, defineAsyncComponent, reactive, markRaw, toRefs } from "vue";
 import { useInput } from "@/functions/input";
-import { findDay } from "@/days/days";
+import { findDay, Puzzle } from "@/days/days";
 import PuzzleContainer from "@/components/PuzzleContainer.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import ErrorMessage from "@/components/ErrorMessage.vue";
@@ -65,18 +65,18 @@ export default defineComponent({
       }
     }
 
-    async function runTest(number: number) {
+    async function runTest(puzzle: Puzzle) {
       state.loadingInput = true;
-      const data = await input.load(`day${props.number}-test${number}.txt`);
+      const data = await input.load(`day${props.number}-test${puzzle.testInput ?? puzzle.number}.txt`);
       state.loadingInput = false;
-      callHandler(`runTest${number}`, data);
+      callHandler(`runTest${puzzle.number}`, data);
     }
 
-    async function runPuzzle(number: number) {
+    async function runPuzzle(puzzle: Puzzle) {
       state.loadingInput = true;
       const data = await input.load(`day${props.number}.txt`);
       state.loadingInput = false;
-      callHandler(`runPuzzle${number}`, data);
+      callHandler(`runPuzzle${puzzle.number}`, data);
     }
 
     return {

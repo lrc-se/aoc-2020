@@ -11,7 +11,7 @@
           v-if="puzzle.hasTest"
           class="button secondary"
           :disabled="loading"
-          @click="$emit('run-test', puzzle.number)"
+          @click="$emit('run-test', puzzle)"
         >
           Test
         </button>
@@ -19,7 +19,7 @@
           v-if="puzzle.hasSolution"
           class="button primary"
           :disabled="loading"
-          @click="$emit('run-puzzle', puzzle.number)"
+          @click="$emit('run-puzzle', puzzle)"
         >
           Run
         </button>
