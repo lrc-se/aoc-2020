@@ -27,3 +27,7 @@ Solved with simple, performant `for` loops.
 ### Day 2
 
 Using regex matching, destructuring and functional techniques.
+
+### Day 3
+
+Utilizing modulo arithmetic and the convenient fact that strings can be indexed into directly.
