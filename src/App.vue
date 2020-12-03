@@ -1,6 +1,8 @@
 <template>
   <header>
-    <h1 class="goto-home" @click="gotoHome">Advent of Code 2020</h1>
+    <h1>
+      <span class="goto-home" @click="gotoHome">Advent of Code 2020</span>
+    </h1>
   </header>
   <main><router-view /></main>
 </template>
