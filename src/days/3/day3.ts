@@ -32,6 +32,24 @@ function runPuzzle1(input: string[], output: OutputPublic) {
   output.print();
 }
 
+function runPuzzle2(input: string[], output: OutputPublic) {
+  const start: Coordinate = { x: 0, y: 0 };
+  const steps: Coordinate[] = [
+    { x: 1, y: 1 },
+    { x: 3, y: 1 },
+    { x: 5, y: 1 },
+    { x: 7, y: 1 },
+    { x: 1, y: 2 }
+  ];
+  const counts: number[] = [];
+  steps.forEach(step => {
+    counts.push(traverseMapAndCountTrees(input, start, step));
+  });
+  output.print(`Tree counts: ${counts.join(", ")}`);
+  output.print(`Result: ${counts.reduce((cur, prev) => cur * prev, 1)}`);
+  output.print();
+}
+
 export function createHandler(output: OutputPublic) {
   return {
     runTest1(input: string[]) {
@@ -41,6 +59,14 @@ export function createHandler(output: OutputPublic) {
     runPuzzle1(input: string[]) {
       output.system("Running puzzle 1...");
       runPuzzle1(input, output);
+    },
+    runTest2(input: string[]) {
+      output.system("Running test 2...");
+      runPuzzle2(input, output);
+    },
+    runPuzzle2(input: string[]) {
+      output.system("Running puzzle 2...");
+      runPuzzle2(input, output);
     }
   };
 }
