@@ -31,3 +31,7 @@ Using regex matching, destructuring and functional techniques.
 ### Day 3
 
 Utilizing modulo arithmetic and the convenient fact that strings can be indexed into directly.
+
+### Day 4
+
+This time the focus ended up being on enums and indexable types (and some regexes).
