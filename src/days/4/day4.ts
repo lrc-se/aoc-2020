@@ -13,45 +13,44 @@ enum PassportFieldType {
   CountryID = "cid"
 }
 
-interface PassportField {
-  key: PassportFieldType;
-  value: string;
-}
-
-type Passport = PassportField[];
+type Passport = {
+  [K in PassportFieldType]?: string;
+};
 
 function getPassportDefinitions(input: string[]): string[] {
   return input.join("\n").split("\n\n");
 }
 
 function parsePassport(definition: string): Passport {
-  return definition.split(/\s+/).map(field => {
+  const passport: Passport = {};
+  definition.split(/\s+/).forEach(field => {
     const [key, value] = field.split(":");
-    return { key: key as PassportFieldType, value };
+    passport[key as PassportFieldType] = value;
   });
+  return passport;
 }
 
 function isPassportValid1(passport: Passport): boolean {
-  const definedFields = passport.map(field => field.key);
+  const definedFields = Object.keys(passport);
   return Object.values(PassportFieldType)
     .every(field => field == PassportFieldType.CountryID || definedFields.includes(field));
 }
 
-function isPassportFieldValid(field: PassportField): boolean {
+function isPassportFieldValid(field: string, value = ""): boolean {
   let isValid;
-  switch (field.key) {
+  switch (field) {
     case PassportFieldType.BirthYear:
-      isValid = (field.value >= "1920" && field.value <= "2002");
+      isValid = (value >= "1920" && value <= "2002");
       break;
     case PassportFieldType.IssueYear:
-      isValid = (field.value >= "2010" && field.value <= "2020");
+      isValid = (value >= "2010" && value <= "2020");
       break;
     case PassportFieldType.ExpirationYear:
-      isValid = (field.value >= "2020" && field.value <= "2030");
+      isValid = (value >= "2020" && value <= "2030");
       break;
     case PassportFieldType.Height: {
       isValid = false;
-      const match = /^(\d+)(\D+)$/.exec(field.value);
+      const match = /^(\d+)(\D+)$/.exec(value);
       if (match) {
         const height = +match[1];
         switch (match[2]) {
@@ -66,13 +65,13 @@ function isPassportFieldValid(field: PassportField): boolean {
       break;
     }
     case PassportFieldType.HairColor:
-      isValid = /^#[0-9a-f]{6}$/.test(field.value);
+      isValid = /^#[0-9a-f]{6}$/.test(value);
       break;
     case PassportFieldType.EyeColor:
-      isValid = VALID_EYE_COLORS.includes(field.value);
+      isValid = VALID_EYE_COLORS.includes(value);
       break;
     case PassportFieldType.PassportID:
-      isValid = /^\d{9}$/.test(field.value);
+      isValid = /^\d{9}$/.test(value);
       break;
     default:
       isValid = true;
@@ -85,7 +84,7 @@ function isPassportValid2(passport: Passport): boolean {
   if (!isPassportValid1(passport)) {
     return false;
   }
-  return passport.every(isPassportFieldValid);
+  return Object.entries(passport).every(entry => isPassportFieldValid(...entry));
 }
 
 function runPuzzle(input: string[], validator: (passport: Passport) => boolean, output: OutputPublic) {
