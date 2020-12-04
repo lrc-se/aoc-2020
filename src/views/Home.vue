@@ -36,13 +36,14 @@ nav ul {
   margin: -1em;
   padding: 0;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
 }
 
 nav li {
   list-style-type: none;
   margin: 1em;
-  flex: 0 0 20%;
+  flex: 0 0 calc(20% - 2em);
 }
 
 nav a {

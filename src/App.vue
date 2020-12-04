@@ -48,17 +48,17 @@ body {
 
 h1 {
   margin: 0 0 .5em;
-  font-size: 3.333em;
+  font-size: 3.75em;
 }
 
 h2 {
   margin: .75em 0 .333em;
-  font-size: 2.25em;
+  font-size: 2.5em;
 }
 
 h3 {
   margin: .75em 0 .333em;
-  font-size: 1.5em;
+  font-size: 1.667em;
 }
 
 a {
