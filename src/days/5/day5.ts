@@ -52,6 +52,20 @@ export function createHandler(output: OutputPublic) {
       const max = Math.max(...seats.map(seat => seat.id));
       output.print(`Highest seat ID: ${max}`);
       output.print();
+    },
+    runPuzzle2(input: string[]) {
+      output.system("Running puzzle 2...");
+      const ids = findSeats(input).map(seat => seat.id);
+      ids.sort((a, b) => a - b);
+      for (let i = 1; i < ids.length; ++i) {
+        if (ids[i] - ids[i - 1] == 2) {
+          output.print(`Seat ID: ${ids[i] - 1}`);
+          output.print();
+          return;
+        }
+      }
+      output.error("Seat ID not found");
+      output.print();
     }
   };
 }

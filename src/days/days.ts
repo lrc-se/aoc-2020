@@ -34,7 +34,8 @@ export const days: Day[] = [
   {
     number: 5,
     puzzles: [
-      { number: 1, hasTest: true, hasSolution: true }
+      { number: 1, hasTest: true, hasSolution: true },
+      { number: 2, hasSolution: true }
     ]
   }
 ];
