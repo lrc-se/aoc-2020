@@ -35,3 +35,7 @@ Utilizing modulo arithmetic and the convenient fact that strings can be indexed 
 ### Day 4
 
 This time the focus ended up being on enums and indexable types (and some regexes).
+
+### Day 5
+
+Taking advantage of built-in binary literal conversion. Since `String.prototype.replaceAll()` support is still sketchy I rolled my own substitution function.
