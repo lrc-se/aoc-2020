@@ -39,3 +39,7 @@ This time the focus ended up being on enums and indexable types (and some regexe
 ### Day 5
 
 Taking advantage of built-in binary literal conversion. Since `String.prototype.replaceAll()` support is still sketchy I rolled my own substitution function.
+
+### Day 6
+
+Sets to the rescue!
