@@ -38,6 +38,13 @@ export const days: Day[] = [
       { number: 1, hasTest: true, hasSolution: true },
       { number: 2, hasSolution: true }
     ]
+  },
+  {
+    number: 6,
+    title: "Custom Customs",
+    puzzles: [
+      { number: 1, hasTest: true, hasSolution: true }
+    ]
   }
 ];
 
