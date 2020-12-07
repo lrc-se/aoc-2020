@@ -43,3 +43,7 @@ Taking advantage of built-in binary literal conversion. Since `String.prototype.
 ### Day 6
 
 Sets to the rescue!
+
+### Day 7
+
+Regexes and recursion in perfect(?) harmony.
