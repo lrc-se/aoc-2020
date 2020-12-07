@@ -47,6 +47,16 @@ function canContainBagType(bagRules: BagRules, containerType: string, containeeT
   return false;
 }
 
+function countContainedBags(bagRules: BagRules, type: string): number {
+  const rules = bagRules[type];
+  if (rules?.length) {
+    return rules
+      .map(rule => rule.count + rule.count * countContainedBags(bagRules, rule.type))
+      .reduce((cur, prev) => cur + prev);
+  }
+  return 0;
+}
+
 function runPuzzle1(input: string[], bagType: string, showBags: boolean, output: OutputPublic) {
   const bagRules = getBagRules(input);
   const bags = Object.keys(bagRules).filter(type => canContainBagType(bagRules, type, bagType));
@@ -55,6 +65,12 @@ function runPuzzle1(input: string[], bagType: string, showBags: boolean, output:
   }
   output.print(`Number of bags containing "${bagType}" bag: ${bags.length}`);
   output.print();
+}
+
+function runPuzzle2(input: string[], bagType: string, output: OutputPublic) {
+  const rules = getBagRules(input);
+  const count = countContainedBags(rules, bagType);
+  output.print(`Number of bags contained in "${bagType}" bag: ${count}`);
 }
 
 export function createHandler(output: OutputPublic) {
@@ -66,6 +82,19 @@ export function createHandler(output: OutputPublic) {
     runPuzzle1(input: string[]) {
       output.system("Running puzzle 1...");
       runPuzzle1(input, "shiny gold", false, output);
+    },
+    runTest2(input: string[]) {
+      output.system("Running test 2...");
+      output.print("[Example #1] ", true);
+      runPuzzle2(input.slice(0, 9), "shiny gold", output);
+      output.print("[Example #2] ", true);
+      runPuzzle2(input.slice(10), "shiny gold", output);
+      output.print();
+    },
+    runPuzzle2(input: string[]) {
+      output.system("Running puzzle 2...");
+      runPuzzle2(input, "shiny gold", output);
+      output.print();
     }
   };
 }
