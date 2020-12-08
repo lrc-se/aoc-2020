@@ -47,3 +47,7 @@ Sets to the rescue!
 ### Day 7
 
 Regexes and recursion in perfect(?) harmony.
+
+### Day 8
+
+Using the prototype system directly, with error handling.
