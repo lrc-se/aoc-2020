@@ -54,6 +54,13 @@ export const days: Day[] = [
       { number: 1, hasTest: true, hasSolution: true },
       { number: 2, hasTest: true, hasSolution: true }
     ]
+  },
+  {
+    number: 8,
+    title: "Handheld Halting",
+    puzzles: [
+      { number: 1, hasTest: true, hasSolution: true }
+    ]
   }
 ];
 
