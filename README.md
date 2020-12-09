@@ -51,3 +51,7 @@ Regexes and recursion in perfect(?) harmony.
 ### Day 8
 
 Using the prototype system directly, with error handling.
+
+### Day 9
+
+Back to `for` loops. Yay!
