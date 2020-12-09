@@ -4,23 +4,21 @@ function getNumbers(input: string[]): number[] {
   return input.map(line => +line);
 }
 
-function getSums(numbers: number[]): Set<number> {
-  const sums = new Set<number>();
-  for (let i = 0, len = numbers.length - 1; i < len; ++i) {
-    for (let j = i + 1; j < numbers.length; ++j) {
-      if (numbers[i] != numbers[j]) {
-        sums.add(numbers[i] + numbers[j]);
+function isValid(number: number, checkAgainst: number[]): boolean {
+  for (let i = 0, len = checkAgainst.length - 1; i < len; ++i) {
+    for (let j = i + 1; j < checkAgainst.length; ++j) {
+      if (checkAgainst[i] != checkAgainst[j] && number == checkAgainst[i] + checkAgainst[j]) {
+        return true;
       }
     }
   }
-  return sums;
+  return false;
 }
 
 function findFirstInvalidNumberIndex(data: number[], preambleSize: number): number {
   if (preambleSize < data.length) {
     for (let i = preambleSize; i < data.length; ++i) {
-      const sums = getSums(data.slice(i - preambleSize, i));
-      if (!sums.has(data[i])) {
+      if (!isValid(data[i], data.slice(i - preambleSize, i))) {
         return i;
       }
     }
