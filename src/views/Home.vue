@@ -43,6 +43,7 @@ nav ul {
 nav li {
   list-style-type: none;
   margin: 1em;
+  overflow: hidden;
   flex: 0 0 calc(20% - 2em);
 }
 
@@ -53,6 +54,7 @@ nav a {
   font-family: 'Share Tech Mono', monospace;
   font-size: 2em;
   text-decoration: none;
+  white-space: nowrap;
   display: block;
   transition-property: color, background-color, border-color;
   transition-duration: .3s;
