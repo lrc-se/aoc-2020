@@ -16,7 +16,8 @@ function getRatings(input: string[], addOutletAndDevice = false): number[] {
   const ratings = input.map(rating => +rating);
   ratings.sort((a, b) => a - b);
   if (addOutletAndDevice) {
-    return [0, ...ratings, ratings[ratings.length - 1] + 3];
+    ratings.unshift(0);
+    ratings.push(ratings[ratings.length - 1] + 3);
   }
   return ratings;
 }
