@@ -60,3 +60,8 @@ Back to `for` loops. Yay!
 
 Using recursion with a dynamically populated cache for the second part, which increases its performance by many orders of magnitude (viz. makes it workable at all).
 Also, as it turns out, taking advantage of `number`-to-`string` coercion for plain object keys was easier than using `Map`s due to the rigidity and limited control flow analysis capabilities of the TypeScript compiler.
+
+### Day 11
+
+Made a proper visualization of the solutions this time, based on CSS classes and background images.
+Performance varies quite a bit between browsers (the test cases are deliberately slowed down for clarity).
