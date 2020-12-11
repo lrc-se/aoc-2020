@@ -4,7 +4,7 @@
     <PuzzleContainer
       v-if="handlerLoaded"
       :puzzles="day.puzzles"
-      :loading="loadingInput"
+      :busy="busy"
       @run-test="runTest"
       @run-puzzle="runPuzzle"
     />
@@ -13,6 +13,7 @@
     :is="component"
     v-if="component"
     @handler="setHandler"
+    @busy="busy = $event"
   />
 </template>
 
@@ -51,7 +52,7 @@ export default defineComponent({
         }
       })),
       handlerLoaded: false,
-      loadingInput: false
+      busy: false
     });
 
     let handler: object;
@@ -66,16 +67,16 @@ export default defineComponent({
     }
 
     async function runTest(puzzle: Puzzle) {
-      state.loadingInput = true;
+      state.busy = true;
       const data = await input.load(`day${props.number}-test${puzzle.testInput ?? puzzle.number}.txt`);
-      state.loadingInput = false;
+      state.busy = false;
       callHandler(`runTest${puzzle.number}`, data);
     }
 
     async function runPuzzle(puzzle: Puzzle) {
-      state.loadingInput = true;
+      state.busy = true;
       const data = await input.load(`day${props.number}.txt`);
-      state.loadingInput = false;
+      state.busy = false;
       callHandler(`runPuzzle${puzzle.number}`, data);
     }
 

@@ -10,7 +10,7 @@
         <button
           v-if="puzzle.hasTest"
           class="button secondary"
-          :disabled="loading"
+          :disabled="busy"
           @click="$emit('run-test', puzzle)"
         >
           Test
@@ -18,7 +18,7 @@
         <button
           v-if="puzzle.hasSolution"
           class="button primary"
-          :disabled="loading"
+          :disabled="busy"
           @click="$emit('run-puzzle', puzzle)"
         >
           Run
@@ -39,7 +39,7 @@ export default defineComponent({
       type: Array as PropType<Puzzle[]>,
       default: () => []
     },
-    loading: {
+    busy: {
       type: Boolean
     }
   },
