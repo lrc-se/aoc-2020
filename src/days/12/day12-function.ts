@@ -1,31 +1,13 @@
+import {
+  NavigationAction,
+  NavigationInstruction,
+  Position,
+  Direction,
+  parseInstructions,
+  getPositionString,
+  getManhattanDistance
+} from "./common";
 import { OutputPublic } from "@/functions/output";
-
-enum NavigationAction {
-  MoveNorth = "N",
-  MoveSouth = "S",
-  MoveEast = "E",
-  MoveWest = "W",
-  MoveForward = "F",
-  TurnLeft = "L",
-  TurnRight = "R"
-}
-
-interface NavigationInstruction {
-  action: NavigationAction;
-  value: number;
-}
-
-interface Position {
-  east: number;
-  north: number;
-}
-
-enum Direction {
-  East = "E",
-  South = "S",
-  West = "W",
-  North = "N"
-}
 
 interface BaseShip {
   origin: Position;
@@ -39,13 +21,6 @@ interface Ship extends BaseShip {
 
 interface WaypointShip extends BaseShip {
   waypoint: Position;
-}
-
-function parseInstructions(input: string[]): NavigationInstruction[] {
-  return input.map(line => ({
-    action: line[0] as NavigationAction,
-    value: +line.substring(1)
-  }));
 }
 
 function createShip(
@@ -187,16 +162,6 @@ function navigateWithWaypoint(ship: WaypointShip) {
   }
 }
 
-function getManhattanDistance(position: Position, origin: Position): number {
-  return Math.abs(position.east - origin.east) + Math.abs(position.north - origin.north);
-}
-
-function getPositionString(position: Position): string {
-  const eastOrWest = `${Math.abs(position.east)}${position.east >= 0 ? "E" : "W"}`;
-  const northOrSouth = `${Math.abs(position.north)}${position.north >= 0 ? "N" : "S"}`;
-  return `${eastOrWest}, ${northOrSouth}`;
-}
-
 function runPuzzle1(input: string[], showStatus: boolean, output: OutputPublic) {
   const ship = createShip(parseInstructions(input), Direction.East);
   while (ship.instructions.length) {
@@ -226,19 +191,19 @@ function runPuzzle2(input: string[], showStatus: boolean, output: OutputPublic) 
 export function createHandler(output: OutputPublic) {
   return {
     runTest1(input: string[]) {
-      output.system("Running test 1...");
+      output.system("Running test 1 using functions...");
       runPuzzle1(input, true, output);
     },
     runPuzzle1(input: string[]) {
-      output.system("Running puzzle 1...");
+      output.system("Running puzzle 1 using functions...");
       runPuzzle1(input, false, output);
     },
     runTest2(input: string[]) {
-      output.system("Running test 2...");
+      output.system("Running test 2 using functions...");
       runPuzzle2(input, true, output);
     },
     runPuzzle2(input: string[]) {
-      output.system("Running puzzle 2...");
+      output.system("Running puzzle 2 using functions...");
       runPuzzle2(input, false, output);
     }
   };
