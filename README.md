@@ -65,3 +65,9 @@ Also, as it turns out, taking advantage of `number`-to-`string` coercion for pla
 
 Made a proper visualization of the solutions this time, based on CSS classes and background images.
 Performance varies quite a bit between browsers (the test cases are deliberately slowed down for clarity).
+
+### Day 12
+
+This time the solution comes in three flavors, based on functions, classes and prototypes respectively, with a wee bit of evolution along the way.
+Spotting and analyzing the differences *and* similarities between these approaches is left as an exercise to the reader.
+Part one exploits the convenient fact that TypeScript `enum`s are also regular objects the values of which can be indexed.
