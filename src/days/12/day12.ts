@@ -27,11 +27,18 @@ enum Direction {
   North = "N"
 }
 
-interface Ship {
+interface BaseShip {
   origin: Position;
   position: Position;
-  direction: Direction;
   instructions: NavigationInstruction[];
+}
+
+interface Ship extends BaseShip {
+  direction: Direction;
+}
+
+interface WaypointShip extends BaseShip {
+  waypoint: Position;
 }
 
 function parseInstructions(input: string[]): NavigationInstruction[] {
@@ -54,6 +61,19 @@ function createShip(
   };
 }
 
+function createWaypointShip(
+  instructions: NavigationInstruction[],
+  waypoint: Position,
+  origin: Position = { east: 0, north: 0 }
+): WaypointShip {
+  return {
+    origin,
+    position: { ...origin },
+    waypoint,
+    instructions
+  };
+}
+
 function turn(ship: Ship, steps: number) {
   const directions = Object.values(Direction);
   let index = directions.indexOf(ship.direction);
@@ -64,6 +84,30 @@ function turn(ship: Ship, steps: number) {
     }
     ship.direction = directions[index];
   }
+}
+
+function rotateWaypoint(waypoint: Position, steps: number) {
+  let east = waypoint.east;
+  let north = waypoint.north;
+  switch (steps % 4) {
+    case 1:
+    case -3:
+      east = waypoint.north;
+      north = -waypoint.east;
+      break;
+    case 2:
+    case -2:
+      east = -waypoint.east;
+      north = -waypoint.north;
+      break;
+    case 3:
+    case -1:
+      east = -waypoint.north;
+      north = waypoint.east;
+      break;
+  }
+  waypoint.east = east;
+  waypoint.north = north;
 }
 
 function navigate(ship: Ship) {
@@ -111,6 +155,38 @@ function navigate(ship: Ship) {
   }
 }
 
+function navigateWithWaypoint(ship: WaypointShip) {
+  const instruction = ship.instructions.shift();
+  if (instruction) {
+    switch (instruction.action) {
+      case NavigationAction.MoveNorth:
+        ship.waypoint.north += instruction.value;
+        break;
+      case NavigationAction.MoveSouth:
+        ship.waypoint.north -= instruction.value;
+        break;
+      case NavigationAction.MoveEast:
+        ship.waypoint.east += instruction.value;
+        break;
+      case NavigationAction.MoveWest:
+        ship.waypoint.east -= instruction.value;
+        break;
+      case NavigationAction.MoveForward:
+        ship.position.east += ship.waypoint.east * instruction.value;
+        ship.position.north += ship.waypoint.north * instruction.value;
+        break;
+      case NavigationAction.TurnLeft: {
+        rotateWaypoint(ship.waypoint, -instruction.value / 90);
+        break;
+      }
+      case NavigationAction.TurnRight: {
+        rotateWaypoint(ship.waypoint, instruction.value / 90);
+        break;
+      }
+    }
+  }
+}
+
 function getManhattanDistance(position: Position, origin: Position): number {
   return Math.abs(position.east - origin.east) + Math.abs(position.north - origin.north);
 }
@@ -134,6 +210,19 @@ function runPuzzle1(input: string[], showStatus: boolean, output: OutputPublic) 
   output.print();
 }
 
+function runPuzzle2(input: string[], showStatus: boolean, output: OutputPublic) {
+  const ship = createWaypointShip(parseInstructions(input), { east: 10, north: 1 });
+  while (ship.instructions.length) {
+    if (showStatus) {
+      output.print(`Position: ${getPositionString(ship.position)}; Waypoint: ${getPositionString(ship.waypoint)}`);
+    }
+    navigateWithWaypoint(ship);
+  }
+  output.print(`Final position: ${getPositionString(ship.position)}`);
+  output.print(`Manhattan distance: ${getManhattanDistance(ship.position, ship.origin)}`);
+  output.print();
+}
+
 export function createHandler(output: OutputPublic) {
   return {
     runTest1(input: string[]) {
@@ -143,6 +232,14 @@ export function createHandler(output: OutputPublic) {
     runPuzzle1(input: string[]) {
       output.system("Running puzzle 1...");
       runPuzzle1(input, false, output);
+    },
+    runTest2(input: string[]) {
+      output.system("Running test 2...");
+      runPuzzle2(input, true, output);
+    },
+    runPuzzle2(input: string[]) {
+      output.system("Running puzzle 2...");
+      runPuzzle2(input, false, output);
     }
   };
 }
