@@ -75,3 +75,7 @@ Part one exploits the convenient fact that TypeScript `enum`s are also regular o
 ### Day 13 (part 1)
 
 Simple iteration for part 1, not quite there yet with part 2...
+
+### Day 14
+
+Using built-in binary string conversion, since regular bitwise operators in JS are restricted to 32-bit integers. This also enabled a shortcut for part 2.
