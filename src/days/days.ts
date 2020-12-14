@@ -106,7 +106,8 @@ export const days: Day[] = [
     number: 14,
     title: "Docking Data",
     puzzles: [
-      { number: 1, hasTest: true, hasSolution: true }
+      { number: 1, hasTest: true, hasSolution: true },
+      { number: 2, hasTest: true, hasSolution: true }
     ]
   }
 ];
