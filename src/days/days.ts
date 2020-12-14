@@ -99,7 +99,8 @@ export const days: Day[] = [
     number: 13,
     title: "Shuttle Search",
     puzzles: [
-      { number: 1, hasTest: true, hasSolution: true }
+      { number: 1, hasTest: true, hasSolution: true },
+      { number: 2, hasTest: true, hasSolution: true }
     ]
   },
   {
