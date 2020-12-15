@@ -15,7 +15,13 @@
         </div>
       </output>
     </div>
-    <button class="clear button small" @click="$emit('clear')">Clear</button>
+    <button
+      class="clear button small"
+      :disabled="busy"
+      @click="$emit('clear')"
+    >
+      Clear
+    </button>
   </div>
 </template>
 
@@ -28,6 +34,9 @@ export default defineComponent({
     lines: {
       type: Array as PropType<Line[]>,
       default: () => []
+    },
+    busy: {
+      type: Boolean
     }
   },
 
@@ -101,6 +110,7 @@ output {
   width: .5em;
   margin-left: .1em;
   display: inline-block;
+  vertical-align: bottom;
 }
 
 .cursor::after {
