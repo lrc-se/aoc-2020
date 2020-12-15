@@ -79,3 +79,8 @@ Simple iteration for part 1 and a general math-based algorithm without (too many
 ### Day 14
 
 Using built-in binary string conversion, since regular bitwise operators in JS are restricted to 32-bit integers. This also enabled a shortcut for part 2.
+
+### Day 15
+
+Part 2 uses a caching strategy similar to day 10, but Chrome's memory handling went haywire when I used a plain object, so I had to resort to a `Map` which appears to be almost twice as slow in Firefox. Bah.
+Since we're still in single-threaded mode the UI will freeze when computing part 2, so I've split the examples into sub buttons there and moved some code into the component. Performance varies greatly between browsers, but count on several seconds at the least.
