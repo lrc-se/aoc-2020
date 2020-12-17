@@ -88,3 +88,8 @@ Since we're still in single-threaded mode the UI will freeze when computing part
 ### Day 16
 
 Interface parsing galore! Part 2 is solved by continuously updating an index of matching positions for each field rule, looking for 1:1 matches.
+
+### Day 17
+
+Using classes this time. It took some time figuring out a workable way to represent the infinite grid in a finite manner, but it worked out in the end.
+Be aware that part 2 will take a few seconds to run.
