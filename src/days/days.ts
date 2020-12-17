@@ -126,6 +126,13 @@ export const days: Day[] = [
       { number: 1, hasTest: true, hasSolution: true },
       { number: 2, hasTest: true, hasSolution: true }
     ]
+  },
+  {
+    number: 17,
+    title: "Conway Cubes",
+    puzzles: [
+      { number: 1, hasTest: true, hasSolution: true }
+    ]
   }
 ];
 
