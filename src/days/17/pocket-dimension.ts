@@ -1,9 +1,9 @@
-enum CubeState {
+export enum CubeState {
   Active = "#",
   Inactive = "."
 }
 
-interface Grid {
+export interface Grid {
   [K: string]: {
     [K: string]: {
       [K: string]: CubeState;
@@ -17,7 +17,12 @@ interface Coordinate {
   z: number;
 }
 
-export class PocketDimension {
+export interface BasePocketDimension {
+  executeCycle(): void;
+  countActiveCubes(): number;
+}
+
+export class PocketDimension implements BasePocketDimension {
   grid: Grid = {};
   min: Coordinate = { x: 0, y: 0, z: 0 };
   max: Coordinate = { x: 0, y: 0, z: 0 };
@@ -41,9 +46,10 @@ export class PocketDimension {
 
   setCubeState(x: number, y: number, z: number, state: CubeState) {
     if (!this.grid[z]) {
-      this.grid[z] = {};
-    }
-    if (!this.grid[z][y]) {
+      this.grid[z] = {
+        [y]: {}
+      };
+    } else if (!this.grid[z][y]) {
       this.grid[z][y] = {};
     }
     this.grid[z][y][x] = state;
