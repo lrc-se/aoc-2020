@@ -9,7 +9,16 @@ interface OperatorPrecedence {
 function parseToRPN(expression: string, operatorPrecedence: OperatorPrecedence | null = null): string[] {
   const output: string[] = [];
   const operators: string[] = [];
-  const tokens = expression.replace(/((?<![\d)])-\d+|[^\s\d])/g, " $1 ").trim().split(/\s+/);
+  const tokens = expression
+    .split("")
+    .reverse()
+    .join("")
+    .replace(/(\d+-(?![\d)])|[^\s\d])/g, " $1 ")
+    .trim()
+    .split("")
+    .reverse()
+    .join("")
+    .split(/\s+/);
   let token;
   while ((token = tokens.shift())) {
     if (!isNaN(+token)) {
