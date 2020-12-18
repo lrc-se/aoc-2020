@@ -2,7 +2,11 @@ import { OutputPublic } from "@/functions/output";
 
 const OPERATORS = ["+", "*"];
 
-function parseToRPN(expression: string): string[] {
+interface OperatorPrecedence {
+  [K: string]: number;
+}
+
+function parseToRPN(expression: string, operatorPrecedence: OperatorPrecedence | null = null): string[] {
   const output: string[] = [];
   const operators: string[] = [];
   const tokens = expression.replace(/((?<![\d)])-\d+|[^\s\d])/g, " $1 ").trim().split(/\s+/);
@@ -15,6 +19,13 @@ function parseToRPN(expression: string): string[] {
         const operator = operators[operators.length - 1];
         if (operator == "(") {
           break;
+        }
+        if (operatorPrecedence) {
+          const stackPrecedence = operatorPrecedence[operator] || 0;
+          const tokenPrecedence = operatorPrecedence[token] || 0;
+          if (stackPrecedence < tokenPrecedence) {
+            break;
+          }
         }
         output.push(operator);
         operators.pop();
@@ -83,35 +94,51 @@ function evaluateRPN(tokens: string[]): number {
   return stack[0];
 }
 
+function runTest(input: string[], operatorPrecedence: OperatorPrecedence | null, output: OutputPublic) {
+  input.forEach((expression, i) => {
+    try {
+      output.print(`[Example #${i + 1}] RPN: `, true);
+      const rpn = parseToRPN(expression, operatorPrecedence);
+      output.print(`${rpn.join(" ")} = `, true);
+      output.print(evaluateRPN(rpn).toString());
+    } catch (err) {
+      output.error(err.message);
+    }
+  });
+  output.print();
+}
+
+function runPuzzle(input: string[], operatorPrecedence: OperatorPrecedence | null, output: OutputPublic) {
+  let result = 0;
+  try {
+    input.forEach(expression => {
+      const rpn = parseToRPN(expression, operatorPrecedence);
+      result += evaluateRPN(rpn);
+    });
+    output.print(`Result: ${result}`);
+  } catch (err) {
+    output.error(err.message);
+  }
+  output.print();
+}
+
 export function createHandler(output: OutputPublic) {
   return {
     runTest1(input: string[]) {
       output.system("Running test 1...");
-      input.forEach((expression, i) => {
-        try {
-          output.print(`[Example #${i + 1}] RPN: `, true);
-          const rpn = parseToRPN(expression);
-          output.print(`${rpn.join(" ")} = `, true);
-          output.print(evaluateRPN(rpn).toString());
-        } catch (err) {
-          output.error(err.message);
-        }
-      });
-      output.print();
+      runTest(input, null, output);
     },
     runPuzzle1(input: string[]) {
       output.system("Running puzzle 1...");
-      let result = 0;
-      try {
-        input.forEach(expression => {
-          const rpn = parseToRPN(expression);
-          result += evaluateRPN(rpn);
-        });
-        output.print(`Result: ${result}`);
-      } catch (err) {
-        output.error(err.message);
-      }
-      output.print();
+      runPuzzle(input, null, output);
+    },
+    runTest2(input: string[]) {
+      output.system("Running test 2...");
+      runTest(input, { "+": 2, "*": 1 }, output);
+    },
+    runPuzzle2(input: string[]) {
+      output.system("Running puzzle 2...");
+      runPuzzle(input, { "+": 2, "*": 1 }, output);
     }
   };
 }
