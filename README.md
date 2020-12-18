@@ -93,3 +93,8 @@ Interface parsing galore! Part 2 is solved by continuously updating an index of 
 
 Using classes this time. It took some time figuring out a workable way to represent the infinite grid in a finite manner, but it worked out in the end.
 Be aware that part 2 will take a few seconds to run.
+
+### Day 18
+
+Solved using Dijkstra's shunting-yard algorithm and an RPN evaluator, with a parsing step that supports negative numbers.
+Error handling is also included, so the test examples have been expanded with an additional five cases only the first of which should pass, with correct handling of multi-digit and negative values.
