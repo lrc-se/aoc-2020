@@ -24,11 +24,13 @@ function runPuzzle1(input: string[], output: OutputPublic) {
   output.print();
 }
 
-function runPuzzle2(input: string[], output: OutputPublic) {
+function runPuzzle2(input: string[], output: OutputPublic): Image | null {
+  let image: Image | null = null;
   const cameraArray = createCameraArray(input);
   try {
     const result = cameraArray.getSeaMonsterResult();
     if (result.count) {
+      image = result.image;
       output.print(`${result.count == 1 ? "1 sea monster" : `${result.count} sea monsters`} found`);
       output.print(`Water roughness: ${getWaterRoughness(result.image)}`);
     } else {
@@ -38,6 +40,7 @@ function runPuzzle2(input: string[], output: OutputPublic) {
     output.error(err.message);
   }
   output.print();
+  return image;
 }
 
 export function createHandler(output: OutputPublic) {
@@ -50,13 +53,13 @@ export function createHandler(output: OutputPublic) {
       output.system("Running puzzle 1...");
       runPuzzle1(input, output);
     },
-    runTest2(input: string[]) {
+    runTest2(input: string[]): Image | null {
       output.system("Running test 2...");
-      runPuzzle2(input, output);
+      return runPuzzle2(input, output);
     },
-    runPuzzle2(input: string[]) {
+    runPuzzle2(input: string[]): Image | null {
       output.system("Running puzzle 2...");
-      runPuzzle2(input, output);
+      return runPuzzle2(input, output);
     }
   };
 }
