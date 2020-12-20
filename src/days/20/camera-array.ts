@@ -1,4 +1,4 @@
-type Image = string[][];
+export type Image = string[][];
 
 export interface Tile {
   id: number;
@@ -15,6 +15,23 @@ enum Direction {
   Right,
   Down
 }
+
+export enum Pixel {
+  MonochromeOff = ".",
+  MonochromeOn = "#",
+  SeaMonster = "O"
+}
+
+interface SeaMonsterResult {
+  image: Image;
+  count: number;
+}
+
+const SEA_MONSTER = [
+  "                  # ",
+  "#    ##    ##    ###",
+  " #  #  #  #  #  #   "
+];
 
 function getTiles(input: string[]): Tile[] {
   const re = /^Tile\s+(\d+)\s*:$/;
@@ -94,6 +111,46 @@ function getImageVariants(image: Image): Image[] {
     flipImageVert(rotated),
     flipImageVert(rotatedMirrored)
   ];
+}
+
+function getSeaMonsterResult(image: Image): SeaMonsterResult {
+  const result: SeaMonsterResult = {
+    image: getImageCopy(image),
+    count: 0
+  };
+  const height = SEA_MONSTER.length;
+  const width = SEA_MONSTER[0].length;
+  for (let y = 0; y < image.length - height; ++y) {
+    for (let x = 0; x < image.length - width; ++x) {
+      const area = image.slice(y, y + height).map(row => row.slice(x, x + width));
+      let found = true;
+      for (let areaY = 0; areaY < height; ++areaY) {
+        for (let areaX = 0; areaX < width; ++areaX) {
+          if (SEA_MONSTER[areaY][areaX] == Pixel.MonochromeOn) {
+            if (area[areaY][areaX] == Pixel.MonochromeOn) {
+              area[areaY][areaX] = Pixel.SeaMonster;
+            } else {
+              found = false;
+              break;
+            }
+          }
+          if (!found) {
+            break;
+          }
+        }
+      }
+
+      if (found) {
+        for (let areaY = 0; areaY < height; ++areaY) {
+          result.image[y + areaY].splice(x, width, ...area[areaY]);
+        }
+        ++result.count;
+        x += width;
+      }
+    }
+  }
+
+  return result;
 }
 
 const CameraArrayProto = {
@@ -213,11 +270,49 @@ const CameraArrayProto = {
       throw RangeError("Unable to find top left corner");
     }
     throw RangeError("Unable to assemble image");
+  },
+
+  getFinalImage(): Image {
+    const image: Image = [];
+    const grid = this.getAssembledTileGrid();
+    const tileSize = grid[0][0].image.length;
+    for (let i = 0; i < this._size * (tileSize - 2); ++i) {
+      image.push([]);
+    }
+
+    let imageY = 0;
+    for (let y = 0; y < this._size; ++y) {
+      for (let x = 0; x < this._size; ++x) {
+        for (let i = 1; i < tileSize - 1; ++i) {
+          image[imageY + i - 1].push(...grid[y][x].image[i].slice(1, tileSize - 1));
+        }
+      }
+      imageY += tileSize - 2;
+    }
+
+    return image;
+  },
+
+  getSeaMonsterResult(): SeaMonsterResult {
+    const image = this.getFinalImage();
+    const variants = getImageVariants(image);
+    for (let i = 0; i < variants.length; ++i) {
+      const result = getSeaMonsterResult(variants[i]);
+      if (result.count) {
+        return result;
+      }
+    }
+    return {
+      image,
+      count: 0
+    };
   }
 };
 
 export interface CameraArray {
   getAssembledTileGrid(): Tile[][];
+  getFinalImage(): Image;
+  getSeaMonsterResult(): SeaMonsterResult;
 }
 
 export function createCameraArray(input: string[]): CameraArray {
