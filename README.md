@@ -102,3 +102,7 @@ Error handling is also included, so the test examples have been expanded with an
 ### Day 19
 
 Part 1 solved with recursive matching. For part 2 I first tried a somewhat general approach, but in the end just gave up and made a specialized function exploiting the fact that the behavior of rules `0`, `8` and `11` is known. Not very pretty, but it got the job done.
+
+### Day 20
+
+Prototype-based with *lots* of helper functions, plus error handling. Part 2 includes a rudimentary visualization of the sea monsters.
