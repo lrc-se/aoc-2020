@@ -9,11 +9,13 @@ interface Rules {
   [K: number]: Rule;
 }
 
+interface LoopDefinition {
+  original: number[];
+  pattern: number[];
+}
+
 interface LoopDefinitions {
-  [K: number]: {
-    original: number[];
-    pattern: number[];
-  };
+  [K: number]: LoopDefinition;
 }
 
 interface ParsedInput {
@@ -94,8 +96,8 @@ function isValidMessage(message: string, rules: Rules, ruleNumber: number): bool
   return (getRuleMatch(message, rules, ruleNumber) === message);
 }
 
-function getLoopedRules(ruleNumber: number, loopDefinitions: LoopDefinitions, iterations: number): number[] {
-  const { original, pattern } = loopDefinitions[ruleNumber];
+function getLoopedRules(ruleNumber: number, loopDefinition: LoopDefinition, iterations: number): number[] {
+  const { original, pattern } = loopDefinition;
   const loopIndex = pattern.indexOf(ruleNumber);
   if (!~loopIndex) {
     return pattern.slice();
@@ -113,13 +115,13 @@ function getLoopedRules(ruleNumber: number, loopDefinitions: LoopDefinitions, it
   return rules;
 }
 
-function isValidMessage2(message: string, rules: Rules, loopDefinitions: LoopDefinitions): boolean {
+function isValidLoopMessage(message: string, rules: Rules, loopDefinitions: LoopDefinitions): boolean {
   const ruleCopy = { ...rules };
   ruleCopy[8].rules = rules[8].rules.map(r => r.slice());
   ruleCopy[11].rules = rules[11].rules.map(r => r.slice());
   let i = 0;
   while (true) {
-    const loopedRules = getLoopedRules(8, loopDefinitions, i);
+    const loopedRules = getLoopedRules(8, loopDefinitions[8], i);
     if (loopedRules.length > message.length) {
       return false;
     }
@@ -128,7 +130,7 @@ function isValidMessage2(message: string, rules: Rules, loopDefinitions: LoopDef
     if (match) {
       let j = 0;
       while (true) {
-        const loopedRules2 = getLoopedRules(11, loopDefinitions, j);
+        const loopedRules2 = getLoopedRules(11, loopDefinitions[11], j);
         if (loopedRules.length + loopedRules2.length > message.length) {
           break;
         }
@@ -165,8 +167,13 @@ export function createHandler(output: OutputPublic) {
     runTest2(input: string[]) {
       output.system("Running test 2...");
       const { rules, messages } = parseInput(input);
+      output.print("=== WITHOUT LOOPS ===");
+      const validMessages = messages.filter(message => isValidMessage(message, rules, 0));
+      output.print(`Valid messages: ${validMessages.join(", ")}`);
+      output.print();
+      output.print("=== WITH LOOPS ===");
       messages.forEach(message => {
-        const isValid = isValidMessage2(message, rules, LOOPS);
+        const isValid = isValidLoopMessage(message, rules, LOOPS);
         output.print(`${message}: ${isValid ? "valid" : "invalid"}`);
       });
       output.print();
@@ -174,7 +181,7 @@ export function createHandler(output: OutputPublic) {
     runPuzzle2(input: string[]) {
       output.system("Running puzzle 2...");
       const { rules, messages } = parseInput(input);
-      const count = messages.filter(message => isValidMessage2(message, rules, LOOPS)).length;
+      const count = messages.filter(message => isValidLoopMessage(message, rules, LOOPS)).length;
       output.print(`Number of valid messages for rule 0: ${count}`);
       output.print();
     }
