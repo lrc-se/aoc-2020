@@ -98,3 +98,7 @@ Be aware that part 2 will take a few seconds to run.
 
 Solved using Dijkstra's shunting-yard algorithm and an RPN evaluator, with a parsing step that supports negative numbers.
 Error handling is also included, so the test examples have been expanded with an additional five cases only the first of which should pass, with correct handling of multi-digit and negative values.
+
+### Day 19
+
+Part 1 solved with recursive matching. For part 2 I first tried a somewhat general approach, but in the end just gave up and made a specialized function exploiting the fact that the behavior of rules `0`, `8` and `11` is known. Not very pretty, but it got the job done.
