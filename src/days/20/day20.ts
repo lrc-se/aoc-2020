@@ -1,6 +1,18 @@
 import { createCameraArray, Tile, Image, Pixel } from "./camera-array";
 import { OutputPublic } from "@/functions/output";
 
+function getTiles(input: string[]): Tile[] {
+  const re = /^Tile\s+(\d+)\s*:$/;
+  return input.join("\n").split("\n\n").map(line => line.split("\n")).map(data => {
+    const idMatch = re.exec(data[0]);
+    const id = (idMatch ? +idMatch[1] : 0);
+    return {
+      id,
+      image: data.slice(1).map(line => line.split("")).filter(line => line.length)
+    };
+  });
+}
+
 function getCornerProduct(grid: Tile[][]): number {
   const max = grid.length - 1;
   if (max < 0) {
@@ -14,7 +26,8 @@ function getWaterRoughness(image: Image): number {
 }
 
 function runPuzzle1(input: string[], output: OutputPublic) {
-  const cameraArray = createCameraArray(input);
+  const tiles = getTiles(input);
+  const cameraArray = createCameraArray(tiles);
   try {
     const grid = cameraArray.getAssembledTileGrid();
     output.print(`Result: ${getCornerProduct(grid)}`);
@@ -26,7 +39,8 @@ function runPuzzle1(input: string[], output: OutputPublic) {
 
 function runPuzzle2(input: string[], output: OutputPublic): Image | null {
   let image: Image | null = null;
-  const cameraArray = createCameraArray(input);
+  const tiles = getTiles(input);
+  const cameraArray = createCameraArray(tiles);
   try {
     const result = cameraArray.getSeaMonsterResult();
     if (result.count) {

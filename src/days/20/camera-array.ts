@@ -33,18 +33,6 @@ const SEA_MONSTER = [
   " #  #  #  #  #  #   "
 ];
 
-function getTiles(input: string[]): Tile[] {
-  const re = /^Tile\s+(\d+)\s*:$/;
-  return input.join("\n").split("\n\n").map(line => line.split("\n")).map(data => {
-    const idMatch = re.exec(data[0]);
-    const id = (idMatch ? +idMatch[1] : 0);
-    return {
-      id,
-      image: data.slice(1).map(line => line.split("")).filter(line => line.length)
-    };
-  });
-}
-
 function getImageCopy(image: Image): Image {
   return image.map(line => line.slice());
 }
@@ -315,8 +303,7 @@ export interface CameraArray {
   getSeaMonsterResult(): SeaMonsterResult;
 }
 
-export function createCameraArray(input: string[]): CameraArray {
-  const tiles = getTiles(input);
+export function createCameraArray(tiles: Tile[]): CameraArray {
   const size = Math.sqrt(tiles.length);
   if (tiles.length % size > 0) {
     throw RangeError("Tiles cannot form a square grid");
