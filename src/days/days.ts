@@ -163,7 +163,8 @@ export const days: Day[] = [
     number: 21,
     title: "Allergen Assessment",
     puzzles: [
-      { number: 1, hasTest: true, hasSolution: true }
+      { number: 1, hasTest: true, hasSolution: true },
+      { number: 2, hasTest: true, testInput: 1, hasSolution: true }
     ]
   }
 ];

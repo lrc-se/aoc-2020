@@ -15,6 +15,10 @@ interface AllergenMatches {
   [K: string]: Set<string>;
 }
 
+interface AllergenMap {
+  [K: string]: string;
+}
+
 function getFoodList(input: string[]): FoodList {
   const re = /^(.+)\s+\(contains\s+(.+)\)$/;
   const foods = input.map(line => {
@@ -60,6 +64,28 @@ function getAllergenMatches(foodList: FoodList): AllergenMatches {
   return matches;
 }
 
+function getAllergenMap(matches: AllergenMatches): AllergenMap {
+  const map: AllergenMap = {};
+  let finished: boolean;
+  do {
+    finished = true;
+    for (const allergen in matches) {
+      const ingredients = matches[allergen];
+      if (ingredients.size == 1) {
+        const ingredient = Array.from(ingredients)[0];
+        map[allergen] = ingredient;
+        delete matches[allergen];
+        for (const allergen2 in matches) {
+          matches[allergen2].delete(ingredient);
+        }
+        finished = false;
+        break;
+      }
+    }
+  } while (!finished);
+  return map;
+}
+
 function getSafeIngredients(foodList: FoodList): Set<string> {
   const safeIngredients = new Set(foodList.ingredients);
   const matches = getAllergenMatches(foodList);
@@ -77,6 +103,12 @@ function getIngredientFrequency(foodList: FoodList, ingredient: string): number 
   return count;
 }
 
+function getDangerousIngredientList(allergenMap: AllergenMap): string[] {
+  const allergens = Object.keys(allergenMap);
+  allergens.sort();
+  return allergens.map(allergen => allergenMap[allergen]);
+}
+
 function runPuzzle1(input: string[], showIngredients: boolean, output: OutputPublic) {
   const foodList = getFoodList(input);
   const safeIngredients = getSafeIngredients(foodList);
@@ -91,6 +123,19 @@ function runPuzzle1(input: string[], showIngredients: boolean, output: OutputPub
   output.print();
 }
 
+function runPuzzle2(input: string[], showAllergens: boolean, output: OutputPublic) {
+  const foodList = getFoodList(input);
+  const matches = getAllergenMatches(foodList);
+  const map = getAllergenMap(matches);
+  if (showAllergens) {
+    output.print("Allergen distribution: ", true);
+    output.print(Object.keys(map).map(allergen => `${allergen} = ${map[allergen]}`).join(", "));
+  }
+  const list = getDangerousIngredientList(map);
+  output.print(`Canonical dangerous ingredient list: ${list.join(",")}`);
+  output.print();
+}
+
 export function createHandler(output: OutputPublic) {
   return {
     runTest1(input: string[]) {
@@ -100,6 +145,14 @@ export function createHandler(output: OutputPublic) {
     runPuzzle1(input: string[]) {
       output.system("Running puzzle 1...");
       runPuzzle1(input, false, output);
+    },
+    runTest2(input: string[]) {
+      output.system("Running test 2...");
+      runPuzzle2(input, true, output);
+    },
+    runPuzzle2(input: string[]) {
+      output.system("Running puzzle 2...");
+      runPuzzle2(input, false, output);
     }
   };
 }
