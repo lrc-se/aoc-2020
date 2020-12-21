@@ -106,3 +106,7 @@ Part 1 solved with recursive matching. For part 2 I first tried a somewhat gener
 ### Day 20
 
 Prototype-based with *lots* of helper functions, plus error handling. Part 2 includes a rudimentary visualization of the sea monsters.
+
+### Day 21
+
+Employing a filtering strategy similar to day 16, but with `Set`s this time.
