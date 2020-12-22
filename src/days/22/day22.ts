@@ -217,7 +217,6 @@ export function createHandler(output: OutputPublic) {
       runPuzzle2(input, true, output);
     },
     runPuzzle2(input: string[]) {
-      output.system("Running puzzle 2...");
       runPuzzle2(input, false, output);
     }
   };
