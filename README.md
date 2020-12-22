@@ -110,3 +110,7 @@ Prototype-based with *lots* of helper functions, plus error handling. Part 2 inc
 ### Day 21
 
 Employing a filtering strategy similar to day 16, but with `Set`s this time.
+
+### Day 22
+
+Nothing of particular note here, except perhaps the conditional printing and the string `Set`s to keep track of previous rounds in part 2 (which takes several seconds to run).
