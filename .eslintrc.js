@@ -31,6 +31,8 @@ module.exports = {
       }
     ],
 
+    "@typescript-eslint/no-use-before-define": ["error", "nofunc"],
+
     "vue/max-attributes-per-line": [
       "error",
       {
