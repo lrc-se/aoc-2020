@@ -114,3 +114,7 @@ Employing a filtering strategy similar to day 16, but with `Set`s this time.
 ### Day 22
 
 Nothing of particular note here, except perhaps the conditional printing and the string `Set`s to keep track of previous rounds in part 2 (which takes several seconds to run).
+
+### Day 23
+
+Using a simple implementation of a linked list to keep the cup ring performant (although the actual performance of part 2 varies greatly between browsers).
