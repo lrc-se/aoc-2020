@@ -14,7 +14,13 @@ function getCups(input: string): number[] {
   return input.split("").map(num => +num);
 }
 
-function createCupGame(cups: number[]): CupGame {
+function createCupGame(cups: number[], totalCount = 0): CupGame {
+  if (cups.length < totalCount) {
+    cups = cups.slice();
+    for (let i = cups.length + 1; i <= totalCount; ++i) {
+      cups.push(i);
+    }
+  }
   const links: CupLinks = {};
   for (let i = 0; i < cups.length - 1; ++i) {
     links[cups[i]] = cups[i + 1];
@@ -60,6 +66,17 @@ function runPuzzle1(input: string, output: OutputPublic) {
   output.print();
 }
 
+function runPuzzle2(input: string, output: OutputPublic) {
+  const cupGame = createCupGame(getCups(input), 1e6);
+  for (let i = 0; i < 10e6; ++i) {
+    moveCups(cupGame);
+  }
+  const cups = getCupList(cupGame, 1, 3);
+  output.print(`Star cups: ${cups[1]}, ${cups[2]}`);
+  output.print(`Result: ${cups[1] * cups[2]}`);
+  output.print();
+}
+
 export function createHandler(output: OutputPublic) {
   return {
     runTest1(input: string[]) {
@@ -69,6 +86,14 @@ export function createHandler(output: OutputPublic) {
     runPuzzle1(input: string[]) {
       output.system("Running puzzle 1...");
       runPuzzle1(input[0], output);
+    },
+    runTest2(input: string[]) {
+      output.system("Running test 2...");
+      runPuzzle2(input[0], output);
+    },
+    runPuzzle2(input: string[]) {
+      output.system("Running puzzle 2...");
+      runPuzzle2(input[0], output);
     }
   };
 }
