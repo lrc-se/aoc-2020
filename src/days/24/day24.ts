@@ -54,11 +54,9 @@ export function createHandler(output: OutputPublic) {
       runPuzzle1(input, output);
     },
     runTest2(input: string[]) {
-      output.system("Running test 2...");
       runPuzzle2(input, 100, output);
     },
     runPuzzle2(input: string[]) {
-      output.system("Running puzzle 2...");
       runPuzzle2(input, 100, output);
     }
   };
