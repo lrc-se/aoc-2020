@@ -18,8 +18,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, nextTick } from "vue";
+import { defineComponent, reactive, toRefs } from "vue";
 import { useOutput } from "@/functions/output";
+import { useDelay } from "@/functions/delay";
 import { runPuzzle } from "./day15";
 import PuzzleOutput from "@/components/PuzzleOutput.vue";
 
@@ -30,29 +31,15 @@ export default defineComponent({
 
   emits: ["handler", "busy"],
 
-  setup(props, { emit }) {
-    const output = useOutput();
+  setup(props, context) {
     const state = reactive({
       examples: null as string[] | null,
       busy: false
     });
+    const output = useOutput();
+    const delay = useDelay(state, context);
 
-    function runPuzzleDelayed(input: string, turns: number) {
-      state.busy = true;
-      emit("busy", true);
-      nextTick(() => {
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            runPuzzle(input, turns, output);
-            output.print();
-            state.busy = false;
-            emit("busy", false);
-          });
-        });
-      });
-    }
-
-    emit("handler", {
+    context.emit("handler", {
       runTest1(input: string[]) {
         output.system("Running test 1...");
         input.forEach((line, i) => {
@@ -68,11 +55,14 @@ export default defineComponent({
       },
       runTest2(input: string[]) {
         state.examples = input;
-        emit("busy", true);
+        context.emit("busy", true);
       },
       runPuzzle2(input: string[]) {
         output.system("Running puzzle 2...");
-        runPuzzleDelayed(input[0], 30000000);
+        delay(() => {
+          runPuzzle(input[0], 30000000, output);
+          output.print();
+        });
       }
     });
 
@@ -82,7 +72,10 @@ export default defineComponent({
       runTest2Example(example: string, index: number) {
         output.system(`Running test 2 example #${index + 1}...`);
         state.examples = null;
-        runPuzzleDelayed(example, 30000000);
+        delay(() => {
+          runPuzzle(example, 30000000, output);
+          output.print();
+        });
       }
     };
   }

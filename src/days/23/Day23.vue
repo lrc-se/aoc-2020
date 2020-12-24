@@ -7,8 +7,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, nextTick } from "vue";
+import { defineComponent, reactive, toRefs } from "vue";
 import { useOutput } from "@/functions/output";
+import { useDelay } from "@/functions/delay";
 import { createHandler } from "./day23";
 import PuzzleOutput from "@/components/PuzzleOutput.vue";
 
@@ -19,37 +20,28 @@ export default defineComponent({
 
   emits: ["handler", "busy"],
 
-  setup(props, { emit }) {
-    const output = useOutput();
+  setup(props, context) {
     const state = reactive({
       busy: false
     });
+    const output = useOutput();
+    const delay = useDelay(state, context);
     const handler = createHandler(output);
 
-    function runPuzzleDelayed(input: string[], puzzleCallback: (input: string[]) => void) {
-      state.busy = true;
-      emit("busy", true);
-      nextTick(() => {
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            puzzleCallback(input);
-            state.busy = false;
-            emit("busy", false);
-          });
-        });
-      });
-    }
-
-    emit("handler", {
+    context.emit("handler", {
       runTest1: handler.runTest1,
       runPuzzle1: handler.runPuzzle1,
       runTest2(input: string[]) {
         output.system("Running test 2...");
-        runPuzzleDelayed(input, handler.runTest2);
+        delay(() => {
+          handler.runTest2(input);
+        });
       },
       runPuzzle2(input: string[]) {
         output.system("Running puzzle 2...");
-        runPuzzleDelayed(input, handler.runPuzzle2);
+        delay(() => {
+          handler.runPuzzle2(input);
+        });
       }
     });
 

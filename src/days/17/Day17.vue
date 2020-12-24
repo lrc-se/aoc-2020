@@ -7,8 +7,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, nextTick } from "vue";
+import { defineComponent, reactive, toRefs } from "vue";
 import { useOutput } from "@/functions/output";
+import { useDelay } from "@/functions/delay";
 import { PocketDimension, BasePocketDimension } from "./pocket-dimension";
 import { HyperPocketDimension } from "./hyper-pocket-dimension";
 import PuzzleOutput from "@/components/PuzzleOutput.vue";
@@ -20,11 +21,12 @@ export default defineComponent({
 
   emits: ["handler", "busy"],
 
-  setup(props, { emit }) {
-    const output = useOutput();
+  setup(props, context) {
     const state = reactive({
       busy: false
     });
+    const output = useOutput();
+    const delay = useDelay(state, context);
 
     function runPuzzle(dimension: BasePocketDimension, cycles: number) {
       for (let i = 0; i < cycles; ++i) {
@@ -35,21 +37,7 @@ export default defineComponent({
       output.print();
     }
 
-    function runPuzzleDelayed(dimension: BasePocketDimension, cycles: number) {
-      state.busy = true;
-      emit("busy", true);
-      nextTick(() => {
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            runPuzzle(dimension, cycles);
-            state.busy = false;
-            emit("busy", false);
-          });
-        });
-      });
-    }
-
-    emit("handler", {
+    context.emit("handler", {
       runTest1(input: string[]) {
         output.system("Running test 1...");
         runPuzzle(new PocketDimension(input), 6);
@@ -60,11 +48,15 @@ export default defineComponent({
       },
       runTest2(input: string[]) {
         output.system("Running test 2...");
-        runPuzzleDelayed(new HyperPocketDimension(input), 6);
+        delay(() => {
+          runPuzzle(new HyperPocketDimension(input), 6);
+        });
       },
       runPuzzle2(input: string[]) {
         output.system("Running puzzle 2...");
-        runPuzzleDelayed(new HyperPocketDimension(input), 6);
+        delay(() => {
+          runPuzzle(new HyperPocketDimension(input), 6);
+        });
       }
     });
 
