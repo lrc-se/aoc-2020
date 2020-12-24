@@ -118,3 +118,7 @@ Nothing of particular note here, except perhaps the conditional printing and the
 ### Day 23
 
 Using a simple implementation of a linked list to keep the cup ring performant (although the actual performance of part 2 varies greatly between browsers).
+
+### Day 24
+
+Since this was largely a repeat of day 17 I reused much of that solution here, but with a more performant representation of the floor grid (and the transformations). As usual, part 2 performance varies between browsers.
