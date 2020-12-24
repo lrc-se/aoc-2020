@@ -18,13 +18,28 @@ function parseTileList(list: string): Direction[] {
   return tileList;
 }
 
-function runPuzzle1(input: string[], output: OutputPublic) {
+function prepareFloor(input: string[]): Floor {
   const tileLists = input.map(parseTileList);
   const floor = new Floor();
   tileLists.forEach(list => {
     floor.flipTile(list);
   });
+  return floor;
+}
+
+function runPuzzle1(input: string[], output: OutputPublic) {
+  const floor = prepareFloor(input);
   output.print(`Number of black tiles: ${floor.countBlackTiles()}`);
+  output.print();
+}
+
+function runPuzzle2(input: string[], days: number, output: OutputPublic) {
+  const floor = prepareFloor(input);
+  for (let i = 0; i < days; ++i) {
+    floor.flipTiles();
+  }
+  const count = floor.countBlackTiles();
+  output.print(`Number of black tiles after ${days == 1 ? "1 day" : `${days} days`}: ${count}`);
   output.print();
 }
 
@@ -37,6 +52,14 @@ export function createHandler(output: OutputPublic) {
     runPuzzle1(input: string[]) {
       output.system("Running puzzle 1...");
       runPuzzle1(input, output);
+    },
+    runTest2(input: string[]) {
+      output.system("Running test 2...");
+      runPuzzle2(input, 100, output);
+    },
+    runPuzzle2(input: string[]) {
+      output.system("Running puzzle 2...");
+      runPuzzle2(input, 100, output);
     }
   };
 }

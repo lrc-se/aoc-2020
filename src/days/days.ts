@@ -187,7 +187,8 @@ export const days: Day[] = [
     number: 24,
     title: "Lobby Layout",
     puzzles: [
-      { number: 1, hasTest: true, hasSolution: true }
+      { number: 1, hasTest: true, hasSolution: true },
+      { number: 2, hasTest: true, testInput: 1, hasSolution: true }
     ]
   }
 ];

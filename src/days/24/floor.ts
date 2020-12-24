@@ -59,6 +59,32 @@ export class Floor {
     this.setTileState(pos, !this.isTileBlack(pos));
   }
 
+  flipTiles() {
+    const changedTiles = new Map<Coordinate, boolean>();
+    for (let y = this.min.y - 1; y <= this.max.y + 1; ++y) {
+      for (let x = this.min.x - 1; x <= this.max.x + 1; ++x) {
+        const pos: Coordinate = { x, y };
+        const isBlack = this.isTileBlack(pos);
+        const count = this.countBlackNeighbors(pos);
+        if (isBlack && (count == 0 || count > 2)) {
+          changedTiles.set(pos, false);
+        } else if (!isBlack && count == 2) {
+          changedTiles.set(pos, true);
+        }
+      }
+    }
+    for (const [key, value] of changedTiles.entries()) {
+      this.setTileState(key, value);
+    }
+  }
+
+  countBlackNeighbors(coord: Coordinate): number {
+    return Object.values(NEIGHBORS).reduce(
+      (count, step) => count + +this.isTileBlack({ x: coord.x + step.x, y: coord.y + step.y }),
+      0
+    );
+  }
+
   countBlackTiles(): number {
     return Object.values(this.tiles).filter(tile => tile).length;
   }
