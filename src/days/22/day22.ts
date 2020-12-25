@@ -20,7 +20,6 @@ interface GameState {
 }
 
 type Printer = (text?: string) => void;
-const nullPrinter: Printer = () => undefined;
 
 function getPlayers(input: string[]): Player[] {
   const players: Player[] = [];
@@ -61,18 +60,22 @@ function playRound(player1: Player, player2: Player): Round {
   };
 }
 
-function playGame(player1: Player, player2: Player, print: Printer = nullPrinter): Player {
+function playGame(player1: Player, player2: Player, print?: Printer): Player {
   let round = 1;
   while (true) {
-    print(`-- Round ${round} --`);
-    print(`Player ${player1.number}'s deck: ${player1.cards.join(", ")}`);
-    print(`Player ${player2.number}'s deck: ${player2.cards.join(", ")}`);
+    if (print) {
+      print(`-- Round ${round} --`);
+      print(`Player ${player1.number}'s deck: ${player1.cards.join(", ")}`);
+      print(`Player ${player2.number}'s deck: ${player2.cards.join(", ")}`);
+    }
 
     const result = playRound(player1, player2);
-    print(`Player ${player1.number} plays: ${result.player1Card}`);
-    print(`Player ${player2.number} plays: ${result.player2Card}`);
-    print(`Player ${result.winner.number} wins the round!`);
-    print();
+    if (print) {
+      print(`Player ${player1.number} plays: ${result.player1Card}`);
+      print(`Player ${player2.number} plays: ${result.player2Card}`);
+      print(`Player ${result.winner.number} wins the round!`);
+      print();
+    }
 
     if (!player1.cards.length) {
       return player2;
@@ -87,7 +90,7 @@ function getRoundKey(player1: Player, player2: Player): string {
   return `${player1.cards.join(",")}|${player2.cards.join(",")}}`;
 }
 
-function playRecursiveRound(player1: Player, player2: Player, gameState: GameState, print: Printer = nullPrinter): Round {
+function playRecursiveRound(player1: Player, player2: Player, gameState: GameState, print?: Printer): Round {
   gameState.previousRounds.add(getRoundKey(player1, player2));
   const player1Card = player1.cards.shift();
   const player2Card = player2.cards.shift();
@@ -96,8 +99,10 @@ function playRecursiveRound(player1: Player, player2: Player, gameState: GameSta
     throw RangeError("Invalid player cards");
   }
 
-  print(`Player ${player1.number} plays: ${player1Card}`);
-  print(`Player ${player2.number} plays: ${player2Card}`);
+  if (print) {
+    print(`Player ${player1.number} plays: ${player1Card}`);
+    print(`Player ${player2.number} plays: ${player2Card}`);
+  }
   if (player1.cards.length >= player1Card && player2.cards.length >= player2Card) {
     const subPlayer1: Player = {
       number: player1.number,
@@ -107,8 +112,10 @@ function playRecursiveRound(player1: Player, player2: Player, gameState: GameSta
       number: player2.number,
       cards: player2.cards.slice(0, player2Card)
     };
-    print("Starting sub-game...");
-    print();
+    if (print) {
+      print("Starting sub-game...");
+      print();
+    }
 
     const subGameState: GameState = {
       game: gameState.totalGames + 1,
@@ -125,8 +132,10 @@ function playRecursiveRound(player1: Player, player2: Player, gameState: GameSta
       winner = player2;
       player2.cards.push(player2Card, player1Card);
     }
-    print(`=== GAME ${gameState.game} ===`);
-    print();
+    if (print) {
+      print(`=== GAME ${gameState.game} ===`);
+      print();
+    }
   } else {
     if (player1Card > player2Card) {
       winner = player1;
@@ -146,31 +155,43 @@ function playRecursiveRound(player1: Player, player2: Player, gameState: GameSta
   };
 }
 
-function playRecursiveGame(player1: Player, player2: Player, gameState: GameState, print: Printer = nullPrinter): Player {
-  print(`=== GAME ${gameState.game} ===`);
-  print();
+function playRecursiveGame(player1: Player, player2: Player, gameState: GameState, print?: Printer): Player {
+  if (print) {
+    print(`=== GAME ${gameState.game} ===`);
+    print();
+  }
   ++gameState.totalGames;
   let round = 1;
   while (true) {
     if (gameState.previousRounds.has(getRoundKey(player1, player2))) {
-      print(`Player ${player1.number} wins the game!`);
+      if (print) {
+        print(`Player ${player1.number} wins the game!`);
+      }
       return player1;
     }
 
-    print(`-- Round ${round} --`);
-    print(`Player ${player1.number}'s deck: ${player1.cards.join(", ")}`);
-    print(`Player ${player2.number}'s deck: ${player2.cards.join(", ")}`);
+    if (print) {
+      print(`-- Round ${round} --`);
+      print(`Player ${player1.number}'s deck: ${player1.cards.join(", ")}`);
+      print(`Player ${player2.number}'s deck: ${player2.cards.join(", ")}`);
+    }
     const result = playRecursiveRound(player1, player2, gameState, print);
-    print(`Player ${result.winner.number} wins round ${round} of game ${gameState.game}!`);
-    print();
+    if (print) {
+      print(`Player ${result.winner.number} wins round ${round} of game ${gameState.game}!`);
+      print();
+    }
 
     if (!player1.cards.length) {
-      print(`Player ${player2.number} wins game ${gameState.game}!`);
-      print();
+      if (print) {
+        print(`Player ${player2.number} wins game ${gameState.game}!`);
+        print();
+      }
       return player2;
     } else if (!player2.cards.length) {
-      print(`Player ${player1.number} wins game ${gameState.game}!`);
-      print();
+      if (print) {
+        print(`Player ${player1.number} wins game ${gameState.game}!`);
+        print();
+      }
       return player1;
     }
     ++round;
@@ -183,7 +204,7 @@ function calculateScore(cards: Deck): number {
 
 function runPuzzle1(input: string[], showRounds: boolean, output: OutputPublic) {
   const players = getPlayers(input);
-  const winner = playGame(players[0], players[1], (showRounds ? output.print : nullPrinter));
+  const winner = playGame(players[0], players[1], (showRounds ? output.print : undefined));
   output.print(`Player ${winner.number} wins the game!`);
   output.print(`Winning score: ${calculateScore(winner.cards)}`);
   output.print();
@@ -196,7 +217,7 @@ function runPuzzle2(input: string[], showRounds: boolean, output: OutputPublic) 
     previousRounds: new Set(),
     totalGames: 0
   };
-  const winner = playRecursiveGame(players[0], players[1], gameState, (showRounds ? output.print : nullPrinter));
+  const winner = playRecursiveGame(players[0], players[1], gameState, (showRounds ? output.print : undefined));
   output.print(`Player ${winner.number} wins the game!`);
   output.print(`Winning score: ${calculateScore(winner.cards)}`);
   output.print();
