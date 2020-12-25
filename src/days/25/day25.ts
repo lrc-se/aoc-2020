@@ -5,10 +5,6 @@ interface Keys {
   door: number;
 }
 
-interface KeyCache {
-  [K: number]: number;
-}
-
 function getKeys(input: string[]): Keys {
   const keys = input.map(num => +num);
   return {
@@ -17,34 +13,23 @@ function getKeys(input: string[]): Keys {
   };
 }
 
-function transform(subject: number, loops: number, cache: KeyCache = {}): number {
-  let value = 1;
-  let start = 1;
-  let existing = loops;
-  while (existing) {
-    if (cache[existing]) {
-      value = cache[existing];
-      start = existing + 1;
-      break;
-    }
-    --existing;
-  }
-
-  for (let i = start; i <= loops; ++i) {
+function transform(subject: number, loops: number, startValue = 1): number {
+  let value = startValue;
+  for (let i = 1; i <= loops; ++i) {
     value = (value * subject) % 20201227;
   }
-  cache[loops] = value;
   return value;
 }
 
 export function runPuzzle(input: string[], output: OutputPublic) {
   const keys = getKeys(input);
   let loops = 0;
-  let key;
-  const cache: KeyCache = {};
+  let key = 1;
   do {
-    key = transform(7, ++loops, cache);
+    key = transform(7, 1, key);
+    ++loops;
   } while (key != keys.card);
+  output.print(`Card key: ${key}`);
   output.print(`Card loop size: ${loops}`);
   const encKey = transform(keys.door, loops);
   output.print(`Encryption key: ${encKey}`);

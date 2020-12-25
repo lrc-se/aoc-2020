@@ -125,4 +125,4 @@ Since this was largely a repeat of day 17 I reused much of that solution here, b
 
 ### Day 25
 
-Easily solved with a simple key cache. Nice reindeer!
+~~Easily solved with a simple key cache.~~ *Skipped the cache and just fed the previous value directly into the next iteration instead.* Nice reindeer!
