@@ -122,3 +122,7 @@ Using a simple implementation of a linked list to keep the cup ring performant (
 ### Day 24
 
 Since this was largely a repeat of day 17 I reused much of that solution here, but with a more performant representation of the floor grid (and the transformations). As usual, part 2 performance varies between browsers.
+
+### Day 25
+
+Easily solved with a simple key cache. Nice reindeer!
