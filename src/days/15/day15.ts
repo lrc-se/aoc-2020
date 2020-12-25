@@ -6,19 +6,19 @@ function getNumbers(input: string): number[] {
 
 function playMemoryGame(startingNumbers: number[], turns: number): number[] {
   const numbers: number[] = [];
-  const lookup = new Map<number, number>();
+  const lookup = new Uint32Array(turns);
   startingNumbers.forEach((number, i) => {
     numbers.push(number);
-    lookup.set(number, i);
+    lookup[number] = i + 1;
   });
 
   for (let i = startingNumbers.length - 1, len = turns - 1; i < len; ++i) {
-    if (lookup.has(numbers[i])) {
-      numbers.push(i - lookup.get(numbers[i])!); // eslint-disable-line
+    if (lookup[numbers[i]]) {
+      numbers.push(i - lookup[numbers[i]] + 1);
     } else {
       numbers.push(0);
     }
-    lookup.set(numbers[i], i);
+    lookup[numbers[i]] = i + 1;
   }
 
   return numbers;
