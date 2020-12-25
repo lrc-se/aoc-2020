@@ -83,7 +83,7 @@ Using built-in binary string conversion, since regular bitwise operators in JS a
 ### Day 15
 
 ~~Part 2 uses a caching strategy similar to day 10, but Chrome's memory handling went haywire when I used a plain object, so I had to resort to a `Map` which appears to be almost twice as slow in Firefox. Bah.~~
-*Changed the cache to use a pre-allocated typed array instead, which was considerably faster.*
+*__Update:__ Changed the cache to use a pre-allocated typed array instead, which was considerably faster.*
 Since we're still in single-threaded mode the UI will freeze when computing part 2, so I've split the examples into sub buttons there and moved some code into the component. Performance varies greatly between browsers, but count on several seconds at the least.
 
 ### Day 16
@@ -92,8 +92,8 @@ Interface parsing galore! Part 2 is solved by continuously updating an index of 
 
 ### Day 17
 
-Using classes this time. It took some time figuring out a workable way to represent the infinite grid in a finite manner, but it worked out in the end.
-Be aware that part 2 will take a few seconds to run.
+Using classes this time. It took some time figuring out a workable way to represent the infinite grid in a finite manner, but it worked out in the end. Be aware that part 2 may take a few seconds to run.
+*__Update:__ Changed the grid representation to the simpler format used in day 24, which is slightly faster, and rearranged some code.*
 
 ### Day 18
 
@@ -126,4 +126,4 @@ Since this was largely a repeat of day 17 I reused much of that solution here, b
 
 ### Day 25
 
-~~Easily solved with a simple key cache.~~ *Skipped the cache and just fed the previous value directly into the next iteration instead.* Nice reindeer!
+~~Easily solved with a simple key cache.~~ *__Update:__ Skipped the cache and just fed the previous value directly into the next iteration instead.* Nice reindeer!

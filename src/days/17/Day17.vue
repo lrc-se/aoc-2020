@@ -10,7 +10,7 @@
 import { defineComponent, reactive, toRefs } from "vue";
 import { useOutput } from "@/functions/output";
 import { useDelay } from "@/functions/delay";
-import { PocketDimension, BasePocketDimension } from "./pocket-dimension";
+import { PocketDimension, DefaultPocketDimension } from "./pocket-dimension";
 import { HyperPocketDimension } from "./hyper-pocket-dimension";
 import PuzzleOutput from "@/components/PuzzleOutput.vue";
 
@@ -28,7 +28,7 @@ export default defineComponent({
     const output = useOutput();
     const delay = useDelay(state, context);
 
-    function runPuzzle(dimension: BasePocketDimension, cycles: number) {
+    function runPuzzle(dimension: PocketDimension, cycles: number) {
       for (let i = 0; i < cycles; ++i) {
         dimension.executeCycle();
       }
@@ -40,11 +40,11 @@ export default defineComponent({
     context.emit("handler", {
       runTest1(input: string[]) {
         output.system("Running test 1...");
-        runPuzzle(new PocketDimension(input), 6);
+        runPuzzle(new DefaultPocketDimension(input), 6);
       },
       runPuzzle1(input: string[]) {
         output.system("Running puzzle 1...");
-        runPuzzle(new PocketDimension(input), 6);
+        runPuzzle(new DefaultPocketDimension(input), 6);
       },
       runTest2(input: string[]) {
         output.system("Running test 2...");

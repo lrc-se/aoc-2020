@@ -1,4 +1,4 @@
-import { CubeState, Grid, BasePocketDimension } from "./pocket-dimension";
+import { CubeState, PocketDimension, BasePocketDimension } from "./pocket-dimension";
 
 interface Coordinate {
   x: number;
@@ -7,16 +7,12 @@ interface Coordinate {
   w: number;
 }
 
-interface HyperGrid {
-  [K: string]: Grid;
-}
-
-export class HyperPocketDimension implements BasePocketDimension {
-  grid: HyperGrid = {};
+export class HyperPocketDimension extends BasePocketDimension implements PocketDimension {
   min: Coordinate = { x: 0, y: 0, z: 0, w: 0 };
   max: Coordinate = { x: 0, y: 0, z: 0, w: 0 };
 
   constructor(plane: string[] | null = null) {
+    super();
     if (plane) {
       for (let y = 0; y < plane.length; ++y) {
         for (let x = 0; x < plane[y].length; ++x) {
@@ -27,27 +23,11 @@ export class HyperPocketDimension implements BasePocketDimension {
   }
 
   getCubeState(x: number, y: number, z: number, w: number): CubeState {
-    if (this.grid[w] && this.grid[w][z] && this.grid[w][z][y]) {
-      return this.grid[w][z][y][x] || CubeState.Inactive;
-    }
-    return CubeState.Inactive;
+    return this.grid[`${x},${y},${z},${w}`] ?? CubeState.Inactive;
   }
 
   setCubeState(x: number, y: number, z: number, w: number, state: CubeState) {
-    if (!this.grid[w]) {
-      this.grid[w] = {
-        [z]: {
-          [y]: {}
-        }
-      };
-    } else if (!this.grid[w][z]) {
-      this.grid[w][z] = {
-        [y]: {}
-      };
-    } else if (!this.grid[w][z][y]) {
-      this.grid[w][z][y] = {};
-    }
-    this.grid[w][z][y][x] = state;
+    this.grid[`${x},${y},${z},${w}`] = state;
     if (state == CubeState.Active) {
       this.min = {
         x: Math.min(this.min.x, x),
@@ -87,19 +67,6 @@ export class HyperPocketDimension implements BasePocketDimension {
     this.grid = temp.grid;
     this.min = temp.min;
     this.max = temp.max;
-  }
-
-  countActiveCubes(): number {
-    return Object.values(this.grid).reduce(
-      (wCount, wPlane) => wCount + Object.values(wPlane).reduce(
-        (zCount, zPlane) => zCount + Object.values(zPlane).reduce(
-          (yCount, yPlane) => yCount + Object.values(yPlane).filter(cube => cube == CubeState.Active).length,
-          0
-        ),
-        0
-      ),
-      0
-    );
   }
 
   private countActiveNeighbors(x: number, y: number, z: number, w: number): number {

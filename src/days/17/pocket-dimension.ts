@@ -3,12 +3,8 @@ export enum CubeState {
   Inactive = "."
 }
 
-export interface Grid {
-  [K: string]: {
-    [K: string]: {
-      [K: string]: CubeState;
-    };
-  };
+interface Grid {
+  [K: string]: CubeState;
 }
 
 interface Coordinate {
@@ -17,17 +13,25 @@ interface Coordinate {
   z: number;
 }
 
-export interface BasePocketDimension {
+export interface PocketDimension {
   executeCycle(): void;
   countActiveCubes(): number;
 }
 
-export class PocketDimension implements BasePocketDimension {
+export class BasePocketDimension {
   grid: Grid = {};
+
+  countActiveCubes(): number {
+    return Object.values(this.grid).filter(state => state == CubeState.Active).length;
+  }
+}
+
+export class DefaultPocketDimension extends BasePocketDimension implements PocketDimension {
   min: Coordinate = { x: 0, y: 0, z: 0 };
   max: Coordinate = { x: 0, y: 0, z: 0 };
 
   constructor(plane: string[] | null = null) {
+    super();
     if (plane) {
       for (let y = 0; y < plane.length; ++y) {
         for (let x = 0; x < plane[y].length; ++x) {
@@ -38,21 +42,11 @@ export class PocketDimension implements BasePocketDimension {
   }
 
   getCubeState(x: number, y: number, z: number): CubeState {
-    if (this.grid[z] && this.grid[z][y]) {
-      return this.grid[z][y][x] || CubeState.Inactive;
-    }
-    return CubeState.Inactive;
+    return this.grid[`${x},${y},${z}`] ?? CubeState.Inactive;
   }
 
   setCubeState(x: number, y: number, z: number, state: CubeState) {
-    if (!this.grid[z]) {
-      this.grid[z] = {
-        [y]: {}
-      };
-    } else if (!this.grid[z][y]) {
-      this.grid[z][y] = {};
-    }
-    this.grid[z][y][x] = state;
+    this.grid[`${x},${y},${z}`] = state;
     if (state == CubeState.Active) {
       this.min = {
         x: Math.min(this.min.x, x),
@@ -68,7 +62,7 @@ export class PocketDimension implements BasePocketDimension {
   }
 
   executeCycle() {
-    const temp = new PocketDimension();
+    const temp = new DefaultPocketDimension();
     for (let z = this.min.z - 1; z <= this.max.z + 1; ++z) {
       for (let y = this.min.y - 1; y <= this.max.y + 1; ++y) {
         for (let x = this.min.x - 1; x <= this.max.x + 1; ++x) {
@@ -88,16 +82,6 @@ export class PocketDimension implements BasePocketDimension {
     this.grid = temp.grid;
     this.min = temp.min;
     this.max = temp.max;
-  }
-
-  countActiveCubes(): number {
-    return Object.values(this.grid).reduce(
-      (zCount, zPlane) => zCount + Object.values(zPlane).reduce(
-        (yCount, yPlane) => yCount + Object.values(yPlane).filter(cube => cube == CubeState.Active).length,
-        0
-      ),
-      0
-    );
   }
 
   private countActiveNeighbors(x: number, y: number, z: number): number {
