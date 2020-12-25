@@ -1,11 +1,16 @@
 <template>
-  <PuzzleOutput :lines="output" @clear="clearOutput" />
+  <PuzzleOutput
+    :lines="output"
+    :busy="busy"
+    @clear="clearOutput"
+  />
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, reactive, toRefs } from "vue";
 import { useOutput } from "@/functions/output";
-import { createHandler } from "./day25";
+import { useDelay } from "@/functions/delay";
+import { runPuzzle } from "./day25";
 import PuzzleOutput from "@/components/PuzzleOutput.vue";
 
 export default defineComponent({
@@ -13,14 +18,32 @@ export default defineComponent({
     PuzzleOutput
   },
 
-  emits: ["handler"],
+  emits: ["handler", "busy"],
 
-  setup(props, { emit }) {
+  setup(props, context) {
+    const state = reactive({
+      busy: false
+    });
     const output = useOutput();
-    const handler = createHandler(output);
-    emit("handler", handler);
+    const delay = useDelay(state, context);
 
-    return output.mixin;
+    context.emit("handler", {
+      runTest1(input: string[]) {
+        output.system("Running test 1...");
+        runPuzzle(input, output);
+      },
+      runPuzzle1(input: string[]) {
+        output.system("Running puzzle 1...");
+        delay(() => {
+          runPuzzle(input, output);
+        });
+      }
+    });
+
+    return {
+      ...toRefs(state),
+      ...output.mixin
+    };
   }
 });
 </script>

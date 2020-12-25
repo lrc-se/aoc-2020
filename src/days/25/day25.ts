@@ -37,7 +37,7 @@ function transform(subject: number, loops: number, cache: KeyCache = {}): number
   return value;
 }
 
-function runPuzzle(input: string[], output: OutputPublic) {
+export function runPuzzle(input: string[], output: OutputPublic) {
   const keys = getKeys(input);
   let loops = 0;
   let key;
@@ -49,17 +49,4 @@ function runPuzzle(input: string[], output: OutputPublic) {
   const encKey = transform(keys.door, loops);
   output.print(`Encryption key: ${encKey}`);
   output.print();
-}
-
-export function createHandler(output: OutputPublic) {
-  return {
-    runTest1(input: string[]) {
-      output.system("Running test 1...");
-      runPuzzle(input, output);
-    },
-    runPuzzle1(input: string[]) {
-      output.system("Running puzzle 1...");
-      runPuzzle(input, output);
-    }
-  };
 }
