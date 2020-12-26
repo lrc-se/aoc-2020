@@ -8,6 +8,11 @@
       @run-test="runTest"
       @run-puzzle="runPuzzle"
     />
+    <ErrorMessage
+      v-if="inputError"
+      class="input-error"
+      :error="inputError"
+    />
   </template>
   <component
     :is="component"
@@ -27,7 +32,8 @@ import ErrorMessage from "@/components/ErrorMessage.vue";
 
 export default defineComponent({
   components: {
-    PuzzleContainer
+    PuzzleContainer,
+    ErrorMessage
   },
 
   props: {
@@ -52,7 +58,8 @@ export default defineComponent({
         }
       })),
       handlerLoaded: false,
-      busy: false
+      busy: false,
+      inputError: null as string | null
     });
 
     let handler: object;
@@ -68,15 +75,33 @@ export default defineComponent({
 
     async function runTest(puzzle: Puzzle) {
       state.busy = true;
-      const data = await input.load(`day${props.number}-test${puzzle.testInput ?? puzzle.number}.txt`);
-      state.busy = false;
+      state.inputError = null;
+      let data: string[];
+      try {
+        data = await input.load(`day${props.number}-test${puzzle.testInput ?? puzzle.number}.txt`);
+      } catch (err) {
+        console.error(err.message);
+        state.inputError = `Error loading test ${puzzle.number} input`;
+        return;
+      } finally {
+        state.busy = false;
+      }
       callHandler(`runTest${puzzle.number}`, data);
     }
 
     async function runPuzzle(puzzle: Puzzle) {
       state.busy = true;
-      const data = await input.load(`day${props.number}.txt`);
-      state.busy = false;
+      state.inputError = null;
+      let data: string[];
+      try {
+        data = await input.load(`day${props.number}.txt`);
+      } catch (err) {
+        console.error(err.message);
+        state.inputError = `Error loading puzzle ${puzzle.number} input`;
+        return;
+      } finally {
+        state.busy = false;
+      }
       callHandler(`runPuzzle${puzzle.number}`, data);
     }
 
@@ -92,3 +117,10 @@ export default defineComponent({
   }
 });
 </script>
+
+<style scoped>
+.input-error {
+  margin: 1em 0;
+  font-size: 2.5em;
+}
+</style>
