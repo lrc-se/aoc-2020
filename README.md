@@ -2,6 +2,7 @@ Advent of Code 2020
 ===================
 
 This year's puzzles will be solved using Vue 3 and TypeScript, exploring the possibilities and limitations of both.
+The application structure is somewhat artificial since there is no backend, which would normally take care of the heavy processing now handled entirely by the frontend, but at least puzzle inputs are fetched AJAX-illy.
 
 Running
 -------
@@ -15,7 +16,7 @@ $ yarn build      # build for production
 ```
 
 When building for production, the base path can be changed by defining the `VUE_BASE_PATH` environment variable.
-Also remember to [configure server routing](https://router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations).
+Also remember to [configure server routing](https://router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations), but exclude the *inputs* directory to get proper error handling on the AJAX requests.
 
 Puzzles
 -------
@@ -34,7 +35,7 @@ Utilizing modulo arithmetic and the convenient fact that strings can be indexed 
 
 ### Day 4
 
-This time the focus ended up being on enums and indexable types (and some regexes).
+This time the focus ended up being on `enum`s and indexable types (and some regexes).
 
 ### Day 5
 
@@ -42,7 +43,7 @@ Taking advantage of built-in binary literal conversion. Since `String.prototype.
 
 ### Day 6
 
-Sets to the rescue!
+`Set`s to the rescue!
 
 ### Day 7
 
@@ -84,7 +85,7 @@ Using built-in binary string conversion, since regular bitwise operators in JS a
 
 ~~Part 2 uses a caching strategy similar to day 10, but Chrome's memory handling went haywire when I used a plain object, so I had to resort to a `Map` which appears to be almost twice as slow in Firefox. Bah.~~
 *__Update:__ Changed the cache to use a pre-allocated typed array instead, which was considerably faster.*
-Since we're still in single-threaded mode the UI will freeze when computing part 2, so I've split the examples into sub buttons there and moved some code into the component. Performance varies greatly between browsers, but count on several seconds at the least.
+Since we're still in single-threaded mode the UI will freeze when computing part 2, so I've split the examples into sub buttons there and moved some code into the component. Performance varies between browsers.
 
 ### Day 16
 
@@ -98,7 +99,7 @@ Using classes this time. It took some time figuring out a workable way to repres
 ### Day 18
 
 Solved using Dijkstra's shunting-yard algorithm and an RPN evaluator, with a parsing step that supports negative numbers.
-Error handling is also included, so the test examples have been expanded with an additional five cases only the first of which should pass, with correct handling of multi-digit and negative values.
+Error handling is also included, so the test examples have been expanded with an additional five cases only the first of which should pass, with correct handling of multi-digit and negative values (as well as some whitespace sabotage).
 
 ### Day 19
 
@@ -114,11 +115,11 @@ Employing a filtering strategy similar to day 16, but with `Set`s this time.
 
 ### Day 22
 
-Nothing of particular note here, except perhaps the conditional printing and the string `Set`s to keep track of previous rounds in part 2 (which takes several seconds to run).
+Nothing of particular note here, except perhaps the string `Set`s used to keep track of previous rounds in part 2 (which takes several seconds to run).
 
 ### Day 23
 
-Using a simple implementation of a linked list to keep the cup ring performant (although the actual performance of part 2 varies greatly between browsers).
+Using a simple implementation of a linked list to keep the cup ring performant (although the actual performance of part 2 varies between browsers).
 
 ### Day 24
 
@@ -127,3 +128,16 @@ Since this was largely a repeat of day 17 I reused much of that solution here, b
 ### Day 25
 
 ~~Easily solved with a simple key cache.~~ *__Update:__ Skipped the cache and just fed the previous value directly into the next iteration instead.* Nice reindeer!
+
+Summary
+-------
+
+Well, all problems solved! Some were easier than others, but on the whole things went well – especially considering the limitations and idiosyncrasies of the browser platform.
+
+As for TS, it has helped at times and hindered at others, sometimes resulting in hoops-jumping for stuff that plain JS handles without a second thought. My strategy has been to limit myself to annotations and syntax sugar such as enums, so that the transpiled code should *not* contain statements that serve no actual logic function but are solely there for TS's benefit – and I think that has largely worked out.
+
+The dive into Vue 3 didn't get quite as deep as it might have gotten, with most days using the basic "terminal output" component, but several new core concepts were adequately trialled.
+
+Lastly, I have consistently aimed to solve the puzzles using combinations of generalized functions, in various forms, so that the solutions should depend as little as possible on concrete features of the problem presentations and/or the specific nature of the provided input data. This has resulted in code which is probably not quite as performant as it could have been had I modelled it more closely after the situations at hand at every step, but on the other hand it is also likely more robust – including pervasive error handling – and more in line with typical on-the-job production code. By and large, I think I've reached this goal.
+
+See you next year!
