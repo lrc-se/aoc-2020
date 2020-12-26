@@ -23,7 +23,6 @@ function findFirstInvalidNumberIndex(data: number[], preambleSize: number): numb
       }
     }
   }
-
   return -1;
 }
 
@@ -43,7 +42,6 @@ function getInvalidSumRange(data: number[], preambleSize: number): number[] {
       }
     }
   }
-
   return [];
 }
 

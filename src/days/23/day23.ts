@@ -21,11 +21,13 @@ function createCupGame(cups: number[], totalCount = 0): CupGame {
       cups.push(i);
     }
   }
+
   const links: CupLinks = {};
   for (let i = 0; i < cups.length - 1; ++i) {
     links[cups[i]] = cups[i + 1];
   }
   links[cups[cups.length - 1]] = cups[0];
+
   return {
     links,
     current: cups[0],

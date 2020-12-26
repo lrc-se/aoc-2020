@@ -76,7 +76,6 @@ function isPassportFieldValid(field: string, value = ""): boolean {
     default:
       isValid = true;
   }
-
   return isValid;
 }
 

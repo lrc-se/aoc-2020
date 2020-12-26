@@ -37,7 +37,6 @@ function runPuzzle2(input: string[], showStatus: boolean, output: OutputPublic) 
         }
       }
     }
-
     ++offset;
   } while (offset < con.program.length);
   output.print(`Accumulator value: ${con.accumulator}`);

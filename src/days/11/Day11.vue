@@ -38,11 +38,7 @@ export default defineComponent({
       layout: null as unknown as Layout,
       seatCount: 0,
       iterations: 0,
-      hasResult: false,
-      tileClasses: {
-        [PositionType.EmptySeat]: "empty",
-        [PositionType.OccupiedSeat]: "occupied"
-      } as { [K in PositionType]?: string }
+      hasResult: false
     });
 
     function updateLayout(occupiedThreshold: number, maxSteps = Infinity, delay = 0) {
@@ -91,6 +87,10 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
+      tileClasses: {
+        [PositionType.EmptySeat]: "empty",
+        [PositionType.OccupiedSeat]: "occupied"
+      },
       reset
     };
   }

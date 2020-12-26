@@ -96,11 +96,10 @@ function getSafeIngredients(foodList: FoodList): Set<string> {
 }
 
 function getIngredientFrequency(foodList: FoodList, ingredient: string): number {
-  let count = 0;
-  foodList.foods.forEach(food => {
-    count += food.ingredients.filter(i => i === ingredient).length;
-  });
-  return count;
+  return foodList.foods.reduce(
+    (count, food) => count + food.ingredients.filter(i => i === ingredient).length,
+    0
+  );
 }
 
 function getDangerousIngredientList(allergenMap: AllergenMap): string[] {
