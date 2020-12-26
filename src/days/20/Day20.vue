@@ -111,6 +111,7 @@ export default defineComponent({
 }
 
 .image {
+  max-width: 100%;
   background-color: #22f;
   overflow: hidden;
 }
@@ -121,7 +122,13 @@ export default defineComponent({
 
 .tile {
   width: 6px;
-  height: 6px;
+  flex: 0 1 auto;
+}
+
+.tile::before {
+  content: "";
+  padding-top: 100%;
+  display: block;
 }
 
 .tile.rough-water {

@@ -74,7 +74,7 @@ output {
   width: 100%;
   height: 768px;
   max-height: 80vh;
-  padding: 1em 1em 0;
+  padding: 1em 0 0 1em;
   background-color: rgba(0, 0, 0, .667);
   font-family: 'Share Tech Mono', monospace;
   display: block;
@@ -93,6 +93,12 @@ output {
 
 .line:last-child {
   margin-bottom: 1em;
+}
+
+.line::after {
+  content: "";
+  width: 1em;
+  display: inline-block;
 }
 
 .error {
@@ -128,5 +134,11 @@ output {
   0% { opacity: 1; }
   50% { opacity: .25; }
   100% { opacity: 1; }
+}
+
+@media only screen and (max-width: 480px) {
+  output {
+    font-size: .875em;
+  }
 }
 </style>

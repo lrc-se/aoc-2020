@@ -27,6 +27,7 @@ export default defineComponent({
   color: #f23;
   font-size: 3em;
   font-weight: 700;
+  line-height: 1.3;
   text-transform: uppercase;
   animation: blink 1.5s ease-in-out infinite;
 }

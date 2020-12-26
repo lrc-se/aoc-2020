@@ -121,6 +121,7 @@ export default defineComponent({
 
 .col {
   width: 20px;
+  background-size: 100%;
   flex: 0 1 auto;
 }
 
@@ -154,7 +155,6 @@ export default defineComponent({
   position: fixed;
   left: 50%;
   top: 50%;
-  max-width: 90%;
   background-color: rgba(0, 0, 0, .85);
   z-index: 1;
   transform: translate(-50%, -50%);
@@ -169,5 +169,17 @@ export default defineComponent({
   40% { opacity: 1; }
   60% { opacity: 1; }
   100% { opacity: 0; }
+}
+
+@media only screen and (max-width: 768px) {
+  .result {
+    width: calc(100% - 8em);
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .result .message {
+    font-size: 1.75em;
+  }
 }
 </style>

@@ -48,7 +48,7 @@ nav li {
 }
 
 nav a {
-  padding: 1em;
+  padding: 1em 0;
   color: inherit;
   background-color: rgba(0, 0, 0, .25);
   font-family: 'Share Tech Mono', monospace;
@@ -65,5 +65,51 @@ nav a:hover {
   color: #acf;
   background-color: rgba(0, 0, 0, .5);
   border-color: #acf;
+}
+
+@media only screen and (max-width: 1024px) {
+  nav ul {
+    margin: -.75em;
+  }
+
+  nav li {
+    margin: .75em;
+    flex-basis: calc(20% - 1.5em);
+  }
+
+  nav a {
+    font-size: 1.667em;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  nav li {
+    flex-basis: calc(25% - 1.5em);
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  nav ul {
+    margin: -.5em;
+  }
+
+  nav li {
+    margin: .5em;
+    flex-basis: calc(25% - 1em);
+  }
+
+  nav a {
+    font-size: 1.5em;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  nav li {
+    flex-basis: calc(33.333% - 1em);
+  }
+
+  nav a {
+    font-size: 1.25em;
+  }
 }
 </style>

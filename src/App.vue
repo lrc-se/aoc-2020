@@ -49,16 +49,19 @@ body {
 h1 {
   margin: 0 0 .5em;
   font-size: 3.75em;
+  line-height: 1.2;
 }
 
 h2 {
   margin: .75em 0 .333em;
   font-size: 2.5em;
+  line-height: 1.2;
 }
 
 h3 {
   margin: .75em 0 .333em;
   font-size: 1.667em;
+  line-height: 1.2;
 }
 
 a {
@@ -126,7 +129,7 @@ a {
 }
 
 .border {
-  border: 1px solid #fff;
+  border: 1px solid rgba(255, 255, 255, .8);
   border-radius: 4px;
 }
 
@@ -137,5 +140,57 @@ a {
 
 .goto-home:hover {
   color: #acf;
+}
+
+@media only screen and (max-width: 1024px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 3.333em;
+  }
+
+  h2 {
+    font-size: 2.333em;
+  }
+
+  h3 {
+    font-size: 1.5em;
+  }
+
+  .button:not(.small) {
+    margin: .375em;
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  h1 {
+    font-size: 3em;
+  }
+
+  h2 {
+    font-size: 2em;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  h1 {
+    font-size: 2.75em;
+  }
+
+  h2 {
+    font-size: 1.875em;
+  }
+
+  h3 {
+    font-size: 1.333em;
+  }
 }
 </style>
