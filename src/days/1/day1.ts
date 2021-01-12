@@ -33,7 +33,7 @@ function findSumTriple(terms: number[], sum: number): number[] {
 function printResult(result: number[], output: OutputPublic) {
   if (result.length) {
     output.print(`Found entries: ${result.join(", ")}`);
-    output.print(`Result: ${result.reduce((cur, prev) => cur * prev, 1)}`);
+    output.print(`Result: ${result.reduce((prev, cur) => prev * cur, 1)}`);
   } else {
     output.error("No matching entries found!");
   }

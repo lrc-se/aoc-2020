@@ -43,7 +43,7 @@ function runPuzzle2(input: string[], output: OutputPublic) {
   ];
   const counts = steps.map(step => traverseMapAndCountTrees(input, start, step));
   output.print(`Tree counts: ${counts.join(", ")}`);
-  output.print(`Result: ${counts.reduce((cur, prev) => cur * prev, 1)}`);
+  output.print(`Result: ${counts.reduce((prev, cur) => prev * cur, 1)}`);
   output.print();
 }
 

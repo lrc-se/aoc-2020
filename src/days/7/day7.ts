@@ -52,7 +52,7 @@ function countContainedBags(bagRules: BagRules, type: string): number {
   if (rules?.length) {
     return rules
       .map(rule => rule.count + rule.count * countContainedBags(bagRules, rule.type))
-      .reduce((cur, prev) => cur + prev);
+      .reduce((prev, cur) => prev + cur);
   }
   return 0;
 }

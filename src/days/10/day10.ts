@@ -54,13 +54,14 @@ function getReachableRatings(ratings: number[]): ReachableRatings {
 function countArrangements(rating: number, reachableRatings: ReachableRatings, lookup: RatingCounts = {}): number {
   const reachable = reachableRatings[rating];
   if (reachable) {
-    const counts = reachable.map(reachableRating => {
-      if (!lookup[reachableRating]) {
-        lookup[reachableRating] = countArrangements(reachableRating, reachableRatings, lookup);
-      }
-      return lookup[reachableRating];
-    });
-    return counts.reduce((cur, prev) => cur + prev);
+    return reachable
+      .map(reachableRating => {
+        if (!lookup[reachableRating]) {
+          lookup[reachableRating] = countArrangements(reachableRating, reachableRatings, lookup);
+        }
+        return lookup[reachableRating];
+      })
+      .reduce((prev, cur) => prev + cur);
   }
   return 1;
 }
